@@ -3,68 +3,127 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ألو موتور - الإمبراطورية</title>
+    <title>ألو موتور - عيد فطر سعيد</title>
     <style>
-        :root { --main-gold: #ffcc00; --whatsapp-green: #25D366; }
-        body { font-family: 'Cairo', sans-serif; margin: 0; background: #0b0b0b; color: white; text-align: center; }
-        .header { background: linear-gradient(45deg, #000, #1a1a1a); padding: 25px; border-bottom: 4px solid var(--main-gold); box-shadow: 0 5px 20px rgba(0,0,0,0.8); }
+        :root { --main-gold: #ffcc00; --whatsapp-green: #25D366; --eid-red: #d32f2f; }
+        body { font-family: 'Cairo', sans-serif; margin: 0; background: #000; color: white; text-align: center; font-weight: bold; overflow-x: hidden; }
+        
+        /* تأثير النجوم والهلال */
+        #stars { position: fixed; width: 100%; height: 100%; top: 0; left: 0; z-index: -1; }
+        .star { position: absolute; background: white; border-radius: 50%; animation: twinkle 1s infinite alternate; }
+        .moon { position: fixed; top: 10px; right: 10px; font-size: 40px; color: var(--main-gold); z-index: -1; animation: glow 2s infinite alternate; }
+
+        @keyframes twinkle { from { opacity: 0.2; transform: scale(0.8); } to { opacity: 1; transform: scale(1.2); } }
+        @keyframes glow { from { text-shadow: 0 0 5px #fff, 0 0 10px var(--main-gold); } to { text-shadow: 0 0 15px #fff, 0 0 25px var(--main-gold); } }
+
+        /* العنوان الملكي */
+        .header { 
+            background: linear-gradient(45deg, #000, #1a1a1a); 
+            padding: 25px; 
+            border-bottom: 5px solid var(--main-gold); 
+            font-size: 32px; 
+            color: var(--main-gold); 
+            text-shadow: 2px 2px 5px #000;
+        }
+
         .container { padding: 15px; }
         
-        /* كرت الهيبة */
-        .card { background: #1a1a1a; margin: 15px 0; padding: 20px; border-radius: 20px; border-right: 8px solid var(--main-gold); position: relative; overflow: hidden; }
-        
-        /* الخريطة */
-        .map-frame { width: 100%; height: 200px; border-radius: 15px; border: 2px solid #333; margin-top: 10px; }
+        /* الصورة المباشرة (تأكد أن اسمها صحيح في ملفاتك) */
+        .main-img { 
+            width: 90%; 
+            max-width: 350px; 
+            margin: 15px auto; 
+            border: 4px solid var(--main-gold); 
+            border-radius: 15px;
+            display: block;
+        }
 
-        /* نظام القوائم المتداخلة */
-        .sub-page { display: none; background: #252525; padding: 15px; border-radius: 15px; margin-top: 10px; animation: slideIn 0.4s ease; }
-        .btn-toggle { background: var(--main-gold); color: black; padding: 12px; border-radius: 10px; cursor: pointer; font-weight: bold; width: 100%; display: block; text-decoration: none; margin-top: 10px; }
+        /* مربع المعايدات */
+        .eid-card { 
+            background: linear-gradient(135deg, #2c0101, #690101); 
+            border: 3px solid var(--main-gold); 
+            border-radius: 15px; 
+            margin: 15px 0; 
+            padding: 20px; 
+            color: var(--main-gold); 
+            text-shadow: 1px 1px 3px #000;
+            box-shadow: 0 0 15px rgba(255, 204, 0, 0.4);
+        }
+        .eid-text { font-size: 26px; font-weight: 900; margin: 10px 0; }
+        .rose-icon { font-size: 35px; color: #ff3b3b; animation: sway 1s infinite alternate; }
+        @keyframes sway { from { transform: rotate(-5deg); } to { transform: rotate(5deg); } }
 
-        /* اضغط واربح */
-        .gift-box { background: linear-gradient(45deg, #d32f2f, #f44336); padding: 15px; border-radius: 15px; margin-top: 15px; border: 2px dashed #fff; }
-        
+        .card { background: #1a1a1a; margin: 15px 0; padding: 20px; border-radius: 15px; border-right: 8px solid var(--main-gold); box-shadow: 0 5px 10px rgba(0,0,0,0.7); }
+        h3 { color: var(--main-gold); font-size: 24px; margin-bottom: 10px; }
+        p { font-size: 18px; line-height: 1.5; color: #fff; }
+
+        /* نظام القوائم */
+        .btn-toggle { background: var(--main-gold); color: black; padding: 12px; border-radius: 10px; cursor: pointer; font-size: 20px; width: 100%; display: block; border: none; margin-top: 8px; font-weight: 900; }
+        .sub-page { display: none; background: #252525; padding: 15px; border-radius: 12px; margin-top: 8px; text-align: right; }
+
+        /* الحاسبة */
+        .calc-box { margin-top: 10px; background: #000; padding: 12px; border-radius: 8px; border: 1px solid var(--main-gold); }
+        input { width: 80%; padding: 12px; margin: 8px 0; border-radius: 8px; border: none; font-size: 20px; text-align: center; font-weight: bold; }
+        .total-price { font-size: 26px; color: var(--whatsapp-green); margin-top: 8px; }
+
         /* أزرار التواصل */
-        .btn { display: block; width: 90%; margin: 10px auto; padding: 18px; border-radius: 15px; font-weight: bold; text-decoration: none; color: white; font-size: 18px; }
+        .btn { display: block; width: 95%; margin: 12px auto; padding: 18px; border-radius: 12px; font-size: 20px; text-decoration: none; color: white; transition: 0.3s; }
         .whatsapp { background: var(--whatsapp-green); }
         .call { background: #007bff; }
-        .sms { background: #f39c12; }
+        .sms { background: #e67e22; }
 
-        @keyframes slideIn { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        /* الهدية */
+        .gift-box { background: linear-gradient(45deg, var(--eid-red), #e60000); padding: 18px; border-radius: 15px; border: 3px dashed #fff; margin-top: 15px; }
     </style>
 </head>
 <body>
 
-    <div class="header">🏍️ ألو موتور - أبو يزن (الكفو)</div>
+    <div id="stars"></div>
+    <div class="moon">🌙</div>
+
+    <div class="header">🏍️ ألو موتور (أبو يزن)</div>
 
     <div class="container">
         
-        <div class="card">
-            <h3>📍 تتبع المنطقة (إدلب - سرمدا)</h3>
-            <iframe class="map-frame" src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d102910.320478678!2d36.72!3d36.12!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sar!2s!4v1710750000000" allowfullscreen="" loading="lazy"></iframe>
-            <div style="color: var(--main-gold); margin-top: 5px; font-size: 12px;">📡 جاري تحديث موقع الكباتن...</div>
+        <div class="eid-card">
+            <p class="rose-icon">🌹🌹</p>
+            <div class="eid-text">عيد فطر سعيد</div>
+            <div class="eid-text">تقبل الله منا ومنكم</div>
+            <p class="rose-icon">🌹🌹</p>
         </div>
+
+        <img src="Screenshot_2026-03-18-07-19-58-783_com.google.android.googlequicksearchbox.jpg" class="main-img" alt="موتور أبو يزن">
 
         <div class="card">
             <h3>📋 خدماتنا الملكية</h3>
-            <div class="btn-toggle" onclick="toggle('service1')">📦 توصيل الطلبات والطرود ⌵</div>
+            <div class="btn-toggle" onclick="toggle('service1')">📦 توصيل طلبات فقط ⌵</div>
             <div id="service1" class="sub-page">
-                <p>نصلك أينما كنت في سرمدا والدانا.</p>
-                <div class="btn-toggle" style="background: #444; color: white;" onclick="toggle('details1')">شاهد الأسعار ⌵</div>
-                <div id="details1" class="sub-page" style="background: #000;">
-                    15 ليرة تركية لكل 1 كم.
+                <p>📍 التغطية: إدلب - سرمدا - الدانا.</p>
+                <p>🕒 الدوام: 5:00 م - 2:00 ص.</p>
+                
+                <div class="btn-toggle" style="background: #444; color: white; font-size: 16px;" onclick="toggle('calc-area')">💰 شاهد الأسعار والحاسبة ⌵</div>
+                <div id="calc-area" class="sub-page" style="background: #111;">
+                    <p>سعر الكيلومتر: 15 ليرة تركية.</p>
+                    <div class="calc-box">
+                        <p>أدخل عدد الكيلومترات:</p>
+                        <input type="number" id="km-input" placeholder="0" oninput="calcPrice()">
+                        <div id="final-res" class="total-price">المجموع: 0 ل.ت</div>
+                    </div>
                 </div>
             </div>
         </div>
 
         <div class="card gift-box">
-            <h3>🎁 عروض "أبو يزن" للهيبة</h3>
-            <p>سجّل توصيلاتك معنا.. كل **6 توصيلات**، حصل على **التوصيلة السابعة مجاناً**!</p>
-            <div id="counter" style="font-size: 24px; font-weight: bold;">0 / 6</div>
-            <button onclick="addTrip()" style="margin-top: 10px; padding: 5px 15px; border-radius: 5px; border: none; cursor: pointer;">إضافة توصيلة (للتجربة)</button>
+            <h3>🎁 عرض الهيبة</h3>
+            <p>سجّل توصيلاتك معنا..</p>
+            <p style="font-size: 22px;">كل (( 6 )) توصيلات</p>
+            <p>والسابعة مجاناً"</p>
+            <div id="counter" style="font-size: 28px; margin-top: 8px;">0 / 6</div>
+            <button onclick="addTrip()" style="margin-top: 8px; padding: 8px 16px; font-weight: bold; border-radius: 6px; border: none; cursor: pointer; font-size: 16px;">إضافة توصيلة +</button>
         </div>
 
-        <div class="card" style="border:none;">
-            <a href="https://wa.me/963957352181" class="btn whatsapp">💬 اطلب كفو ع الواتساب</a>
+        <div class="card" style="border:none; background: transparent;">
+            <a href="https://wa.me/963957352181" class="btn whatsapp">💬 اطلب أبو يزن واتساب</a>
             <a href="tel:+963957352181" class="btn call">📞 اتصال مباشر</a>
             <a href="sms:+963957352181" class="btn sms">✉️ رسالة نصية SMS</a>
         </div>
@@ -72,9 +131,26 @@
     </div>
 
     <script>
+        // توليد النجوم
+        const starsContainer = document.getElementById('stars');
+        for (let i = 0; i < 50; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            star.style.width = star.style.height = Math.random() * 3 + 'px';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.animationDelay = Math.random() * 2 + 's';
+            starsContainer.appendChild(star);
+        }
+
         function toggle(id) {
             var x = document.getElementById(id);
             x.style.display = (x.style.display === "block") ? "none" : "block";
+        }
+
+        function calcPrice() {
+            var km = document.getElementById('km-input').value;
+            document.getElementById('final-res').innerText = "المجموع: " + (km * 15) + " ل.ت";
         }
 
         let count = 0;
@@ -82,7 +158,7 @@
             count++;
             if(count > 6) count = 0;
             document.getElementById('counter').innerText = count + " / 6";
-            if(count === 6) alert("مبروك! التوصيلة القادمة مجانية من أبو يزن 🏍️🔥");
+            if(count === 6) alert("أبشر يا كفو! التوصيلة الجاية مجانية من عند أبو يزن 🏍️🔥");
         }
     </script>
 
