@@ -1,42 +1,135 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ألو موتور - إدلب</title>
+    <title>ألو موتور - أبو يزن</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #1a1a1a; color: white; text-align: center; margin: 0; padding: 0; }
-        .header { background-color: #ffcc00; padding: 25px; color: black; font-weight: bold; font-size: 28px; border-bottom: 5px solid #25D366; }
-        .section { padding: 20px; border-bottom: 1px solid #333; }
-        .menu-list { list-style: none; padding: 0; display: inline-block; text-align: right; width: 95%; }
-        .menu-list li { background: #333; margin: 10px 0; padding: 15px; border-right: 5px solid #ffcc00; border-radius: 5px; font-size: 18px; }
-        .price { float: left; color: #ffcc00; font-weight: bold; }
-        .btn-order { display: block; width: 85%; margin: 25px auto; padding: 18px; background-color: #25D366; color: white; text-decoration: none; border-radius: 10px; font-weight: bold; font-size: 22px; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4); }
-        iframe { width: 100%; height: 250px; border-radius: 15px; border: 2px solid #ffcc00; margin-top: 15px; }
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            margin: 0; 
+            padding: 0; 
+            min-height: 100vh;
+            text-align: center;
+            /* ربط صورة الموتور بالاسم اللي رفعته بالظبط */
+            background-image: url('Screenshot_2026-03-18-07-19-58-783_com.google.android.googlequicksearchbox.jpg'); 
+            background-size: cover; 
+            background-position: center; 
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+        }
+
+        .overlay {
+            background-color: rgba(0, 0, 0, 0.75); /* سواد شفاف للفخامة والوضوح */
+            min-height: 100vh;
+            width: 100%;
+            padding-bottom: 30px;
+        }
+
+        .header { 
+            background-color: #25D366; 
+            padding: 15px; 
+            color: black; 
+            font-weight: bold; 
+            font-size: 24px; 
+            border-bottom: 4px solid #ffcc00; 
+        }
+
+        .container { padding: 15px; }
+
+        .card { 
+            background-color: rgba(45, 45, 45, 0.85); /* بطاقات شفافة هيبة */
+            margin: 15px 0; 
+            padding: 20px; 
+            border-radius: 12px; 
+            border-right: 6px solid #ffcc00; 
+            color: white;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
+        }
+
+        .price-box { 
+            background-color: rgba(255, 204, 0, 0.15); 
+            padding: 15px; 
+            border-radius: 10px; 
+            margin-top: 10px; 
+        }
+
+        input { 
+            width: 85%; 
+            padding: 12px; 
+            margin-top: 10px; 
+            border-radius: 8px; 
+            border: none; 
+            text-align: center; 
+            font-size: 20px; 
+            font-weight: bold;
+        }
+
+        .result { font-size: 24px; color: #ffcc00; font-weight: bold; margin-top: 10px; }
+
+        .btn { 
+            display: block; 
+            width: 90%; 
+            margin: 12px auto; 
+            padding: 15px; 
+            border-radius: 10px; 
+            text-decoration: none; 
+            font-weight: bold; 
+            font-size: 19px; 
+            color: white; 
+        }
+
+        .btn-whatsapp { background-color: #25D366; }
+        .btn-call { background-color: #007bff; }
+        .btn-sms { background-color: #f39c12; }
+        
+        .info { font-size: 14px; color: #ddd; margin-top: 5px; }
+        .footer { font-size: 12px; color: #aaa; margin-top: 20px; }
     </style>
 </head>
 <body>
 
-    <div class="header">🏍️ ألو موتور (أبو يزن)</div>
+    <div class="overlay">
 
-    <div class="section">
-        <h3>📍 موقعنا في إدلب</h3>
-        <p>نغطي كافة أحياء المدينة والريف القريب</p>
-        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d51688.35624707601!2d36.60226925183424!3d35.932338002075035!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1525126f56f49959%3A0x7d653770404c0d0c!2sIdlib%2C%20Syria!5e0!3m2!1sen!2s!4v1700000000000!5m2!1sen!2s" allowfullscreen="" loading="lazy"></iframe>
+        <div class="header">🏍️ ألو موتور (أبو يزن)</div>
+
+        <div class="container">
+            <div class="card">
+                <h3>📍 مناطق الخدمة</h3>
+                <p>إدلب - سرمدا - الدانا وما حولهم</p>
+                <p class="info">🕒 الدوام: من 5:00 مساءً وحتى 2:00 صباحاً</p>
+            </div>
+
+            <div class="card">
+                <h3>💰 حاسبة سعر التوصيل</h3>
+                <p>أدخل المسافة التقديرية (كيلومتر):</p>
+                <input type="number" id="distance" placeholder="مثلاً: 10" oninput="calculatePrice()">
+                <div class="price-box">
+                    <div id="totalPrice" class="result">السعر: 0 ل.ت</div>
+                    <p class="info">(15 ليرة تركية لكل 1 كم)</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>📞 اطلب كفو الآن</h3>
+                <a href="https://wa.me/963957352181" class="btn btn-whatsapp">💬 واتساب</a>
+                <a href="tel:+963957352181" class="btn btn-call">📞 اتصال مباشر</a>
+                <a href="sms:+963957352181" class="btn btn-sms">✉️ رسالة نصية SMS</a>
+            </div>
+        </div>
+
+        <p class="footer">تم التطوير لعيون أبو يزن الغالي 🏍️✨</p>
+
     </div>
 
-    <div class="section">
-        <h3>📜 قائمة الخدمات (المنيو)</h3>
-        <ul class="menu-list">
-            <li>🚕 توصيل طلبات داخل إدلب <span class="price">100 ل.ت</span></li>
-            <li>📦 نقل طرود ومشتريات <span class="price">150 ل.ت</span></li>
-            <li>🍔 توصيل مطاعم سريع <span class="price">80 ل.ت</span></li>
-            <li>💊 تأمين أدوية ليلي <span class="price">اتصال</span></li>
-        </ul>
-    </div>
+    <script>
+        function calculatePrice() {
+            const distance = document.getElementById('distance').value;
+            const pricePerKm = 15;
+            const total = distance * pricePerKm;
+            document.getElementById('totalPrice').innerText = "السعر: " + total + " ل.ت";
+        }
+    </script>
 
-    <div class="section">
-        <h3>📞 تفاصيل التواصل</h3>
-        <p>جاهزون لخدمتكم 24 ساعة</p>
-        <a href="https://wa.me/963957352181" class="btn-order
+</body>
+</html>
