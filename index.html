@@ -3,33 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ألو موتور - الهيبة</title>
+    <title>ألو موتور - أبو يزن</title>
     <style>
         body { 
-            font-family: 'Cairo', sans-serif; 
-            margin: 0; padding: 0; min-height: 100vh;
+            font-family: 'Arial', sans-serif; 
+            margin: 0; padding: 0; 
+            /* هاد السطر هو اللي بيجيب الموتور الخلفية */
             background-image: url('Screenshot_2026-03-18-07-19-58-783_com.google.android.googlequicksearchbox.jpg'); 
             background-size: cover; background-position: center; background-attachment: fixed;
+            color: white; text-align: center;
         }
-        .overlay { background-color: rgba(0, 0, 0, 0.8); min-height: 100vh; padding-bottom: 50px; }
+        .overlay { background-color: rgba(0, 0, 0, 0.85); min-height: 100vh; padding-bottom: 50px; }
         
-        .header { background: linear-gradient(90deg, #25D366, #128C7E); padding: 25px; color: white; font-size: 28px; font-weight: bold; border-bottom: 5px solid #ffcc00; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
-
-        .container { padding: 15px; }
-
-        /* ستايل القائمة اللي بتفتح */
-        .menu-item { background: rgba(255, 255, 255, 0.1); margin-bottom: 10px; border-radius: 12px; overflow: hidden; border: 1px solid rgba(255, 204, 0, 0.3); }
-        .menu-header { background: rgba(255, 204, 0, 0.2); padding: 15px; color: #ffcc00; font-weight: bold; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 20px; }
-        .menu-content { display: none; padding: 20px; background: rgba(0, 0, 0, 0.5); color: white; text-align: right; animation: fadeIn 0.5s; }
-
-        .motor-img { width: 100%; max-width: 250px; opacity: 0.7; display: block; margin: 10px auto; filter: drop-shadow(0 0 10px #25D366); }
-
-        .price-input { width: 90%; padding: 15px; border-radius: 10px; border: none; font-size: 20px; margin-top: 10px; text-align: center; }
-        .btn { display: block; width: 90%; margin: 15px auto; padding: 18px; border-radius: 12px; text-decoration: none; font-weight: bold; font-size: 20px; color: white; text-align: center; }
+        .header { 
+            background: linear-gradient(90deg, #25D366, #128C7E); padding: 30px; font-size: 32px; font-weight: bold; 
+            color: white; border-bottom: 5px solid #ffcc00; box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        }
+        .container { padding: 20px; }
+        .card { 
+            background-color: rgba(45, 45, 45, 0.9); 
+            margin: 20px 0; padding: 25px; 
+            border-radius: 15px; border-right: 8px solid #ffcc00;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        }
+        h3 { color: #ffcc00; margin-top: 0; font-size: 24px; }
+        p { font-size: 18px; margin: 10px 0; }
+        input { 
+            width: 85%; padding: 18px; margin: 15px 0; 
+            border-radius: 12px; border: none; font-size: 24px; font-weight: bold; text-align: center;
+        }
+        .result { font-size: 32px; color: #25D366; font-weight: bold; margin-top: 10px; }
+        .btn { 
+            display: block; width: 95%; margin: 15px auto; padding: 20px; 
+            border-radius: 15px; text-decoration: none; font-weight: bold; 
+            font-size: 22px; color: white; text-align: center;
+        }
         .btn-whatsapp { background-color: #25D366; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4); }
         .btn-call { background-color: #007bff; box-shadow: 0 4px 15px rgba(0, 123, 255, 0.4); }
-
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .btn-sms { background-color: #f39c12; box-shadow: 0 4px 15px rgba(243, 156, 18, 0.4); } /* لون برتقالي للرسائل */
+        .footer { font-size: 16px; color: #aaa; margin-top: 40px; padding-bottom: 20px; }
     </style>
 </head>
 <body>
@@ -39,48 +51,36 @@
 
     <div class="container">
         
-        <div class="menu-item">
-            <div class="menu-header" onclick="toggleMenu('info')">📋 تفاصيل الخدمة <span>▼</span></div>
-            <div id="info" class="menu-content">
-                <img src="Screenshot_2026-03-18-07-19-58-783_com.google.android.googlequicksearchbox.jpg" class="motor-img" alt="موتور شفاف">
-                <p>✅ <b>توصيل طلبات:</b> أكل، بضائع، هدايا.</p>
-                <p>✅ <b>توصيل أشخاص:</b> أمان وسرعة وبأرخص الأسعار.</p>
-                <p>📍 <b>المناطق:</b> إدلب، سرمدا، الدانا، وكل القرى المحيطة.</p>
-                <p>🕒 <b>نحن معك:</b> من الـ 5 عصراً حتى الـ 2 بعد منتصف الليل.</p>
-            </div>
+        <div class="card">
+            <h3>📍 مناطق الخدمة</h3>
+            <p>✅ إدلب - سرمدا - الدانا وما حولهم</p>
+            <p>🕒 ✅ من 5:00 مساءً حتى 2:00 صباحاً</p>
         </div>
 
-        <div class="menu-item">
-            <div class="menu-header" onclick="toggleMenu('calc')">💰 حاسبة الكيلومترات <span>▼</span></div>
-            <div id="calc" class="menu-content">
-                <p>أدخل المسافة التقديرية:</p>
-                <input type="number" id="distance" class="price-input" placeholder="كم كم؟" oninput="calculate()">
-                <h2 id="total" style="color: #ffcc00; margin-top: 20px;">0 ل.ت</h2>
-                <small>(سعر الكيلو ثابت: 15 ليرة تركية)</small>
-            </div>
+        <div class="card">
+            <h3>💰 حاسبة التوصيل السريعة</h3>
+            <p>أدخل المسافة التقديرية (كم):</p>
+            <input type="number" id="dist" placeholder="كم كم؟" oninput="calc()">
+            <div id="res" class="result">السعر: 0 ل.ت</div>
+            <small style="color: #ccc;">(15 ليرة لكل 1 كم)</small>
         </div>
 
-        <div style="margin-top: 30px;">
-            <a href="https://wa.me/963957352181" class="btn btn-whatsapp">💬 اطلب كفو ع الواتساب</a>
-            <a href="tel:+963957352181" class="btn btn-call">📞 اتصال هاتف مباشر</a>
+        <div class="card">
+            <h3>📞 اطلب كفو الآن</h3>
+            <a href="https://wa.me/963957352181" class="btn btn-whatsapp">💬 واتساب</a>
+            <a href="tel:+963957352181" class="btn btn-call">📞 اتصال مباشر</a>
+            <a href="sms:+963957352181" class="btn btn-sms">✉️ رسالة نصية SMS</a>
         </div>
 
     </div>
+
+    <p class="footer">ألو موتور - كفو وسريع وبأمان 🏍️💨</p>
 </div>
 
 <script>
-    function toggleMenu(id) {
-        var content = document.getElementById(id);
-        if (content.style.display === "block") {
-            content.style.display = "none";
-        } else {
-            content.style.display = "block";
-        }
-    }
-
-    function calculate() {
-        var dist = document.getElementById('distance').value;
-        document.getElementById('total').innerText = (dist * 15) + " ل.ت";
+    function calc() {
+        var d = document.getElementById('dist').value;
+        document.getElementById('res').innerText = "السعر: " + (d * 15) + " ل.ت";
     }
 </script>
 
