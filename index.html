@@ -13,38 +13,46 @@
         body { font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; background-color: #1a1a1a; color: white; text-align: center; }
         .overlay { background-color: rgba(0, 0, 0, 0.9); min-height: 100vh; padding-bottom: 40px; }
         .header { background-color: #25D366; padding: 25px; border-bottom: 5px solid #ffcc00; }
-        .brand-name { font-size: 26px; font-weight: 900; animation: glow 2s infinite; color: #1a1a1a; line-height: 1.6; }
+        .brand-name { font-size: 26px; font-weight: 900; animation: glow 2s infinite; color: #1a1a1a; line-height: 1.6; cursor: pointer; }
         .container { padding: 15px; max-width: 500px; margin: auto; }
         .card { background-color: #2d2d2d; margin: 20px 0; padding: 20px; border-radius: 20px; border: 1px solid #444; }
-        .status-card { background-color: #931a1a; border: 2px solid #ff4444; display: none; margin-bottom: 15px; } 
+        .status-card { background-color: #931a1a; border: 2px solid #ff4444; display: none; margin-bottom: 15px; padding: 15px; border-radius: 15px; } 
         .status-text { font-size: 18px; font-weight: bold; color: white; margin: 0; }
         .ramadan-wish { font-size: 22px; color: #ffcc00; font-weight: bold; animation: glow 1.5s infinite; }
-        .input-group { text-align: right; margin-bottom: 10px; }
-        label { color: #ffcc00; font-weight: bold; display: block; margin-bottom: 5px; }
-        input { width: 100%; padding: 12px; border-radius: 10px; border: 2px solid #ffcc00; text-align: center; font-size: 18px; font-weight: bold; box-sizing: border-box; background: white; color: black; }
+        input { width: 100%; padding: 12px; border-radius: 10px; border: 2px solid #ffcc00; text-align: center; font-size: 18px; font-weight: bold; box-sizing: border-box; background: white; color: black; margin-bottom: 10px; }
         .result-box { font-size: 30px; color: #ffcc00; font-weight: bold; margin-top: 15px; padding: 15px; border: 2px dashed #ffcc00; border-radius: 15px; background: rgba(255,204,0,0.1); }
         .heiba-btn { background: linear-gradient(45deg, #ffcc00, #b89600); color: #000; padding: 15px; border-radius: 10px; cursor: pointer; font-weight: 900; width: 100%; border: none; font-size: 18px; }
         .hidden-content { display: none; padding: 20px 0; }
         .circle-group { display: flex; justify-content: center; gap: 8px; margin: 20px 0; }
-        .circle { width: 35px; height: 35px; border-radius: 50%; border: 2px solid #ffcc00; line-height: 35px; cursor: pointer; font-weight: bold; font-size: 18px; transition: 0.3s; color: #ffcc00; }
+        .circle { width: 35px; height: 35px; border-radius: 50%; border: 2px solid #ffcc00; line-height: 35px; cursor: pointer; font-weight: bold; font-size: 18px; color: #ffcc00; }
         .circle.active { background: #ffcc00; color: #000; box-shadow: 0 0 15px #ffcc00; }
         .btn { display: flex; align-items: center; justify-content: center; gap: 12px; width: 100%; margin: 15px auto; padding: 18px; border-radius: 15px; text-decoration: none; font-weight: bold; color: white; font-size: 20px; box-sizing: border-box; }
         .btn-whatsapp { background-color: #25D366; border-bottom: 4px solid #128C7E; }
         .btn-call { background-color: #007bff; border-bottom: 4px solid #0056b3; }
         .btn-sms { background-color: #f39c12; border-bottom: 4px solid #d35400; }
         .footer-msg { font-size: 20px; font-weight: bold; color: #ffcc00; margin-top: 20px; }
+        #adminPanel { display: none; border: 2px dashed #ffcc00; padding: 15px; margin-top: 10px; border-radius: 15px; }
     </style>
 </head>
 <body>
 
 <div class="overlay">
-    <div class="header">
-        <div class="brand-name">🏍️ أَلُو مٌوتُور أَبُو يَزَن 🏍️<br>ALO MOTOR EBU YEZEN</div>
+    <div class="header" onclick="toggleAdmin()">
+        <div class="brand-name">🏍️ أَلُو مٌوتُور <span style="text-decoration: underline;">أَبُو يَزَن</span> 🏍️<br>ALO MOTOR EBU YEZEN</div>
     </div>
 
     <div class="container">
-        <div id="holidayCard" class="card status-card">
+        <div id="holidayCard" class="status-card">
             <p id="holidayMsg" class="status-text"></p>
+        </div>
+
+        <div id="adminPanel" class="card">
+            <h4 style="color: #ffcc00; margin-top: 0;">⚙️ لوحة تحكم أبو يزن (سرية)</h4>
+            <input type="text" id="statusInput" placeholder="اكتب سبب العطلة هنا...">
+            <div style="display: flex; gap: 10px;">
+                <button onclick="updateStatus()" style="flex: 1; padding: 10px; background: #25D366; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;">تفعيل العطلة</button>
+                <button onclick="clearStatus()" style="flex: 1; padding: 10px; background: #ff4444; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;">إنهاء العطلة</button>
+            </div>
         </div>
 
         <div class="card">
@@ -53,27 +61,16 @@
 
         <div class="card">
             <h3 style="color: #ffcc00;">💰 حاسبة سعر التوصيل</h3>
-            <div class="input-group"><label>📍 من:</label><input type="text" id="fromLoc" placeholder="المكان"></div>
-            <div class="input-group"><label>🏁 إلى:</label><input type="text" id="toLoc" placeholder="الجهة"></div>
-            <div class="input-group"><label>📏 المسافة (كم):</label><input type="number" id="kmInput" placeholder="كم كيلو؟" oninput="calculate()"></div>
+            <input type="number" id="kmInput" placeholder="أدخل المسافة بالكيلو" oninput="calculate()">
             <div id="priceResult" class="result-box">السعر: 0 ل.ت</div>
         </div>
 
-        <div class="card" style="border: 1px dashed #ffcc00;">
-            <label style="font-size: 14px; color: #ffcc00;">⚙️ تحكم بالعطلة:</label>
-            <input type="text" id="statusInput" placeholder="اكتب السبب هنا..." style="margin: 10px 0;">
-            <div style="display: flex; gap: 10px;">
-                <button onclick="updateStatus()" style="flex: 1; padding: 10px; background: #25D366; border: none; border-radius: 8px; font-weight: bold;">تفعيل</button>
-                <button onclick="clearStatus()" style="flex: 1; padding: 10px; background: #ff4444; color: white; border: none; border-radius: 8px; font-weight: bold;">إلغاء</button>
-            </div>
-        </div>
-
         <div class="card">
-            <button class="heiba-btn" onclick="toggleHeiba()">🎁 عرض الهيبة (6+1)</button>
+            <button class="heiba-btn" onclick="toggleHeiba()">🎁 عرض الهيبة.. اضغط هنا</button>
             <div id="heibaContent" class="hidden-content">
                 <h3 style="color: #ffcc00;">كل 6 توصيلات والسابعة مجاناً</h3>
-                <input type="text" id="custName" placeholder="اسمك" style="margin-bottom: 10px;">
-                <input type="text" id="custPhone" placeholder="رقمك" style="margin-bottom: 10px;">
+                <input type="text" id="custName" placeholder="اسمك المسجل">
+                <input type="text" id="custPhone" placeholder="رقم هاتفك">
                 <div class="circle-group">
                     <div class="circle" onclick="mark(1)">1</div>
                     <div class="circle" onclick="mark(2)">2</div>
@@ -83,14 +80,14 @@
                     <div class="circle" onclick="mark(6)">6</div>
                 </div>
                 <div id="congrats" style="color: #25D366; font-weight: bold; margin: 10px 0;"></div>
-                <button onclick="saveAndNotify()" style="width: 100%; padding: 12px; background: white; color: black; border: none; border-radius: 10px; font-weight: bold;">✅ إرسال واتساب</button>
+                <button onclick="saveAndNotify()" style="width: 100%; padding: 12px; background: white; color: black; border: none; border-radius: 10px; font-weight: bold; cursor: pointer;">✅ إرسال واتساب لأبو يزن</button>
             </div>
         </div>
 
         <div class="card">
-            <a href="https://wa.me/963957352181" class="btn btn-whatsapp">🏍️ واتساب</a>
+            <a href="https://wa.me/963957352181" class="btn btn-whatsapp">🏍️ واتساب ألو موتور</a>
             <a href="tel:+963957352181" class="btn btn-call">📞 اتصال مباشر</a>
-            <a href="sms:+963957352181" class="btn btn-sms">✉️ SMS</a>
+            <a href="sms:+963957352181" class="btn btn-sms">✉️ رسالة SMS</a>
         </div>
 
         <div class="card">
@@ -109,6 +106,12 @@
 <script>
     let selectedTawsila = 0;
 
+    // إظهار وإخفاء لوحة التحكم (بالضغط على الاسم فوق)
+    function toggleAdmin() {
+        const panel = document.getElementById('adminPanel');
+        panel.style.display = (panel.style.display === 'block') ? 'none' : 'block';
+    }
+
     function calculate() {
         const km = document.getElementById('kmInput').value;
         document.getElementById('priceResult').innerText = "السعر: " + (km * 15) + " ل.ت";
@@ -119,18 +122,20 @@
         if(reason) {
             document.getElementById('holidayCard').style.display = 'block';
             document.getElementById('holidayMsg').innerText = "اليوم عطلة بسبب: " + reason;
-            localStorage.setItem('holiday_msg', reason);
+            localStorage.setItem('alo_holiday', reason);
+            alert("تم تفعيل العطلة بنجاح!");
         }
     }
 
     function clearStatus() {
         document.getElementById('holidayCard').style.display = 'none';
-        localStorage.removeItem('holiday_msg');
+        localStorage.removeItem('alo_holiday');
         document.getElementById('statusInput').value = "";
+        alert("تم إلغاء العطلة والعودة للعمل!");
     }
 
     window.onload = function() {
-        const saved = localStorage.getItem('holiday_msg');
+        const saved = localStorage.getItem('alo_holiday');
         if(saved) {
             document.getElementById('holidayCard').style.display = 'block';
             document.getElementById('holidayMsg').innerText = "اليوم عطلة بسبب: " + saved;
@@ -138,23 +143,23 @@
     }
 
     function toggleHeiba() {
-        const div = document.getElementById("heibaContent");
-        div.style.display = (div.style.display === "block") ? "none" : "block";
+        const content = document.getElementById("heibaContent");
+        content.style.display = (content.style.display === "block") ? "none" : "block";
     }
 
     function mark(num) {
         selectedTawsila = num;
         let circles = document.querySelectorAll('.circle');
         circles.forEach((c, i) => i < num ? c.classList.add('active') : c.classList.remove('active'));
-        document.getElementById('congrats').innerText = num >= 6 ? "توصيلتك الجاية مجانية 🎉" : "";
+        document.getElementById('congrats').innerText = num >= 6 ? "توصيلتك الجاية مجانية مبروك! 🎉" : "";
     }
 
     function saveAndNotify() {
         const name = document.getElementById('custName').value;
         const phone = document.getElementById('custPhone').value;
-        if(!name || !phone || selectedTawsila === 0) { alert("عبي البيانات يا غالي"); return; }
-        const msg = `تثبيت توصيلة:\n👤 الاسم: ${name}\n📱 الرقم: ${phone}\n🔢 الرقم: ${selectedTawsila}`;
-        window.open(`https://wa.me/963957352181?text=${encodeURIComponent(msg)}`, '_blank');
+        if(!name || !phone || selectedTawsila === 0) { alert("يا غالي عبي البيانات كاملة"); return; }
+        const message = `طلب تثبيت توصيلة:\n👤 الاسم: ${name}\n📱 الرقم: ${phone}\n🔢 التوصيلة رقم: ${selectedTawsila}`;
+        window.open(`https://wa.me/963957352181?text=${encodeURIComponent(message)}`, '_blank');
     }
 </script>
 </body>
