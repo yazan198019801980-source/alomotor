@@ -55,26 +55,26 @@
             <h3 style="color: #ffcc00;">💰 حاسبة سعر التوصيل</h3>
             <div class="input-group"><label>📍 من:</label><input type="text" id="fromLoc" placeholder="المكان"></div>
             <div class="input-group"><label>🏁 إلى:</label><input type="text" id="toLoc" placeholder="الجهة"></div>
-            <div class="input-group"><label>📏 المسافة (كم):</label><input type="number" id="kmInput" placeholder="أدخل المسافة" oninput="calculate()"></div>
+            <div class="input-group"><label>📏 المسافة (كم):</label><input type="number" id="kmInput" placeholder="كم كيلو؟" oninput="calculate()"></div>
             <div id="priceResult" class="result-box">السعر: 0 ل.ت</div>
         </div>
 
         <div class="card" style="border: 1px dashed #ffcc00;">
-            <label style="font-size: 14px; margin-bottom: 10px;">⚙️ التحكم بحالة الدوام (خاص بأبو يزن):</label>
-            <input type="text" id="statusInput" placeholder="اكتب سبب العطلة هنا..." style="margin-bottom: 10px;">
+            <label style="font-size: 14px; color: #ffcc00;">⚙️ تحكم بالعطلة:</label>
+            <input type="text" id="statusInput" placeholder="اكتب السبب هنا..." style="margin: 10px 0;">
             <div style="display: flex; gap: 10px;">
-                <button onclick="updateStatus()" style="flex: 1; padding: 10px; background: #25D366; font-weight: bold; border-radius: 8px; border: none; cursor: pointer;">تفعيل العطلة</button>
-                <button onclick="clearStatus()" style="flex: 1; padding: 10px; background: #ff4444; color: white; font-weight: bold; border-radius: 8px; border: none; cursor: pointer;">إلغاء (شغال)</button>
+                <button onclick="updateStatus()" style="flex: 1; padding: 10px; background: #25D366; border: none; border-radius: 8px; font-weight: bold;">تفعيل</button>
+                <button onclick="clearStatus()" style="flex: 1; padding: 10px; background: #ff4444; color: white; border: none; border-radius: 8px; font-weight: bold;">إلغاء</button>
             </div>
         </div>
 
         <div class="card">
-            <button class="heiba-btn" onclick="toggleHeiba()">اضغط وانظر لعرض الهيبة</button>
+            <button class="heiba-btn" onclick="toggleHeiba()">🎁 عرض الهيبة (6+1)</button>
             <div id="heibaContent" class="hidden-content">
                 <h3 style="color: #ffcc00;">كل 6 توصيلات والسابعة مجاناً</h3>
-                <input type="text" id="custName" placeholder="اسمك المسجل عندنا" style="margin-bottom: 10px;">
-                <input type="text" id="custPhone" placeholder="رقم هاتفك" style="margin-bottom: 10px;">
-                <div class="circle-group" id="circles">
+                <input type="text" id="custName" placeholder="اسمك" style="margin-bottom: 10px;">
+                <input type="text" id="custPhone" placeholder="رقمك" style="margin-bottom: 10px;">
+                <div class="circle-group">
                     <div class="circle" onclick="mark(1)">1</div>
                     <div class="circle" onclick="mark(2)">2</div>
                     <div class="circle" onclick="mark(3)">3</div>
@@ -83,16 +83,79 @@
                     <div class="circle" onclick="mark(6)">6</div>
                 </div>
                 <div id="congrats" style="color: #25D366; font-weight: bold; margin: 10px 0;"></div>
-                <button onclick="saveAndNotify()" style="background-color: #fff; color: #000; padding: 12px 25px; border-radius: 10px; cursor: pointer; font-weight: bold; border: none; width: 100%;">✅ حفظ وإرسال الإشعار لأبو يزن</button>
+                <button onclick="saveAndNotify()" style="width: 100%; padding: 12px; background: white; color: black; border: none; border-radius: 10px; font-weight: bold;">✅ إرسال واتساب</button>
             </div>
         </div>
 
         <div class="card">
-            <a href="https://wa.me/963957352181" class="btn btn-whatsapp">🏍️ واتساب ألو موتور</a>
+            <a href="https://wa.me/963957352181" class="btn btn-whatsapp">🏍️ واتساب</a>
             <a href="tel:+963957352181" class="btn btn-call">📞 اتصال مباشر</a>
-            <a href="sms:+963957352181" class="btn btn-sms">✉️ رسالة نصية SMS</a>
+            <a href="sms:+963957352181" class="btn btn-sms">✉️ SMS</a>
         </div>
 
         <div class="card">
             <h3 style="color: #ffcc00;">📍 مناطق الخدمة</h3>
-            <p>إدلب . حلب . سرمدا .
+            <p>إدلب . حلب . سرمدا . الدانا . وماحولها</p>
+            <p>🕒 من 5 مساءً وحتى 2 صباحاً</p>
+        </div>
+
+        <div class="card">
+            <h2 class="footer-msg" style="animation: glow 2s infinite;">انتظرو عرض الهيبة</h2>
+            <p>نتمنى لكم الصحة والعافية ✨</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    let selectedTawsila = 0;
+
+    function calculate() {
+        const km = document.getElementById('kmInput').value;
+        document.getElementById('priceResult').innerText = "السعر: " + (km * 15) + " ل.ت";
+    }
+
+    function updateStatus() {
+        const reason = document.getElementById('statusInput').value;
+        if(reason) {
+            document.getElementById('holidayCard').style.display = 'block';
+            document.getElementById('holidayMsg').innerText = "اليوم عطلة بسبب: " + reason;
+            localStorage.setItem('holiday_msg', reason);
+        }
+    }
+
+    function clearStatus() {
+        document.getElementById('holidayCard').style.display = 'none';
+        localStorage.removeItem('holiday_msg');
+        document.getElementById('statusInput').value = "";
+    }
+
+    window.onload = function() {
+        const saved = localStorage.getItem('holiday_msg');
+        if(saved) {
+            document.getElementById('holidayCard').style.display = 'block';
+            document.getElementById('holidayMsg').innerText = "اليوم عطلة بسبب: " + saved;
+        }
+    }
+
+    function toggleHeiba() {
+        const div = document.getElementById("heibaContent");
+        div.style.display = (div.style.display === "block") ? "none" : "block";
+    }
+
+    function mark(num) {
+        selectedTawsila = num;
+        let circles = document.querySelectorAll('.circle');
+        circles.forEach((c, i) => i < num ? c.classList.add('active') : c.classList.remove('active'));
+        document.getElementById('congrats').innerText = num >= 6 ? "توصيلتك الجاية مجانية 🎉" : "";
+    }
+
+    function saveAndNotify() {
+        const name = document.getElementById('custName').value;
+        const phone = document.getElementById('custPhone').value;
+        if(!name || !phone || selectedTawsila === 0) { alert("عبي البيانات يا غالي"); return; }
+        const msg = `تثبيت توصيلة:\n👤 الاسم: ${name}\n📱 الرقم: ${phone}\n🔢 الرقم: ${selectedTawsila}`;
+        window.open(`https://wa.me/963957352181?text=${encodeURIComponent(msg)}`, '_blank');
+    }
+</script>
+</body>
+</html>
