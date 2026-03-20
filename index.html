@@ -16,11 +16,8 @@
         .brand-name { font-size: 26px; font-weight: 900; animation: glow 2s infinite; color: #1a1a1a; line-height: 1.6; }
         .container { padding: 15px; max-width: 500px; margin: auto; }
         .card { background-color: #2d2d2d; margin: 20px 0; padding: 20px; border-radius: 20px; border: 1px solid #444; }
-        
-        /* تنسيق خانة العطلة الجديدة */
-        .status-card { background-color: #931a1a; border: 2px solid #ff4444; display: none; } /* مخفية افتراضياً */
-        .status-text { font-size: 18px; font-weight: bold; color: white; }
-
+        .status-card { background-color: #931a1a; border: 2px solid #ff4444; display: none; margin-bottom: 15px; } 
+        .status-text { font-size: 18px; font-weight: bold; color: white; margin: 0; }
         .ramadan-wish { font-size: 22px; color: #ffcc00; font-weight: bold; animation: glow 1.5s infinite; }
         .input-group { text-align: right; margin-bottom: 10px; }
         label { color: #ffcc00; font-weight: bold; display: block; margin-bottom: 5px; }
@@ -29,13 +26,12 @@
         .heiba-btn { background: linear-gradient(45deg, #ffcc00, #b89600); color: #000; padding: 15px; border-radius: 10px; cursor: pointer; font-weight: 900; width: 100%; border: none; font-size: 18px; }
         .hidden-content { display: none; padding: 20px 0; }
         .circle-group { display: flex; justify-content: center; gap: 8px; margin: 20px 0; }
-        .circle { width: 35px; height: 35px; border-radius: 50%; border: 2px solid #ffcc00; line-height: 35px; cursor: pointer; font-weight: bold; font-size: 18px; transition: 0.3s; }
+        .circle { width: 35px; height: 35px; border-radius: 50%; border: 2px solid #ffcc00; line-height: 35px; cursor: pointer; font-weight: bold; font-size: 18px; transition: 0.3s; color: #ffcc00; }
         .circle.active { background: #ffcc00; color: #000; box-shadow: 0 0 15px #ffcc00; }
         .btn { display: flex; align-items: center; justify-content: center; gap: 12px; width: 100%; margin: 15px auto; padding: 18px; border-radius: 15px; text-decoration: none; font-weight: bold; color: white; font-size: 20px; box-sizing: border-box; }
         .btn-whatsapp { background-color: #25D366; border-bottom: 4px solid #128C7E; }
         .btn-call { background-color: #007bff; border-bottom: 4px solid #0056b3; }
         .btn-sms { background-color: #f39c12; border-bottom: 4px solid #d35400; }
-        .footer-msg { font-size: 20px; font-weight: bold; color: #ffcc00; margin-top: 20px; }
         .save-btn { background-color: #fff; color: #000; padding: 12px 25px; border-radius: 10px; cursor: pointer; font-weight: bold; border: none; margin-top: 10px; width: 100%; }
     </style>
 </head>
@@ -48,7 +44,7 @@
 
     <div class="container">
         <div id="holidayCard" class="card status-card">
-            <p id="holidayMsg" class="status-text">اليوم عطلة بسبب: (اكتب السبب هنا)</p>
+            <p id="holidayMsg" class="status-text"></p>
         </div>
 
         <div class="card">
@@ -59,15 +55,17 @@
             <h3 style="color: #ffcc00;">💰 حاسبة سعر التوصيل</h3>
             <div class="input-group"><label>📍 من:</label><input type="text" id="fromLoc" placeholder="المكان"></div>
             <div class="input-group"><label>🏁 إلى:</label><input type="text" id="toLoc" placeholder="الجهة"></div>
-            <div class="input-group"><label>📏 المسافة (كم):</label><input type="number" id="kmInput" placeholder="كم كيلو؟" oninput="calculate()"></div>
+            <div class="input-group"><label>📏 المسافة (كم):</label><input type="number" id="kmInput" placeholder="أدخل المسافة" oninput="calculate()"></div>
             <div id="priceResult" class="result-box">السعر: 0 ل.ت</div>
         </div>
 
-        <div class="card" style="border: 1px dashed #555;">
-            <label style="font-size: 12px;">⚙️ لوحة تحكم الحالة (أبو يزن فقط):</label>
-            <input type="text" id="statusInput" placeholder="اكتب سبب العطلة هنا..." style="font-size: 14px; margin-bottom: 5px;">
-            <button onclick="updateStatus()" style="width: 48%; padding: 5px; background: #25D366; border: none; border-radius: 5px; font-weight: bold;">تفعيل العطلة</button>
-            <button onclick="clearStatus()" style="width: 48%; padding: 5px; background: #ff4444; border: none; border-radius: 5px; font-weight: bold; color: white;">إلغاء (عمل)</button>
+        <div class="card" style="border: 1px dashed #ffcc00;">
+            <label style="font-size: 14px; margin-bottom: 10px;">⚙️ التحكم بحالة الدوام (خاص بأبو يزن):</label>
+            <input type="text" id="statusInput" placeholder="اكتب سبب العطلة هنا..." style="margin-bottom: 10px;">
+            <div style="display: flex; gap: 10px;">
+                <button onclick="updateStatus()" style="flex: 1; padding: 10px; background: #25D366; font-weight: bold; border-radius: 8px; border: none; cursor: pointer;">تفعيل العطلة</button>
+                <button onclick="clearStatus()" style="flex: 1; padding: 10px; background: #ff4444; color: white; font-weight: bold; border-radius: 8px; border: none; cursor: pointer;">إلغاء (شغال)</button>
+            </div>
         </div>
 
         <div class="card">
@@ -100,48 +98,72 @@
             <p>إدلب . حلب . سرمدا . الدانا . وماحولها</p>
             <p>🕒 من 5 مساءً وحتى 2 صباحاً</p>
         </div>
-
-        <div class="card">
-            <h2 class="footer-msg" style="animation: glow 2s infinite;">انتظرو عرض الهيبة</h2>
-            <p>نتمنى لكم الصحة والعافية ✨</p>
-        </div>
     </div>
 </div>
 
 <script>
     let selectedTawsila = 0;
 
-    // وظيفة تحديث حالة العطلة
+    // وظائف الحاسبة
+    function calculate() {
+        var km = document.getElementById('kmInput').value;
+        var result = document.getElementById('priceResult');
+        if (km > 0) {
+            result.innerText = "السعر: " + (km * 15) + " ل.ت";
+        } else {
+            result.innerText = "السعر: 0 ل.ت";
+        }
+    }
+
+    // وظائف حالة العطلة
     function updateStatus() {
-        const reason = document.getElementById('statusInput').value;
+        var reason = document.getElementById('statusInput').value;
         if(reason) {
             document.getElementById('holidayCard').style.display = 'block';
             document.getElementById('holidayMsg').innerText = "اليوم عطلة بسبب: " + reason;
-            localStorage.setItem('aloMotorStatus', reason);
+            localStorage.setItem('aloMotorHoliday', reason);
         }
     }
 
     function clearStatus() {
         document.getElementById('holidayCard').style.display = 'none';
-        localStorage.removeItem('aloMotorStatus');
+        localStorage.removeItem('aloMotorHoliday');
         document.getElementById('statusInput').value = "";
     }
 
-    // التحقق من الحالة عند تحميل الصفحة
     window.onload = function() {
-        const savedStatus = localStorage.getItem('aloMotorStatus');
-        if(savedStatus) {
+        var saved = localStorage.getItem('aloMotorHoliday');
+        if(saved) {
             document.getElementById('holidayCard').style.display = 'block';
-            document.getElementById('holidayMsg').innerText = "اليوم عطلة بسبب: " + savedStatus;
-            document.getElementById('statusInput').value = savedStatus;
+            document.getElementById('holidayMsg').innerText = "اليوم عطلة بسبب: " + saved;
+            document.getElementById('statusInput').value = saved;
         }
     }
 
-    function calculate() {
-        const km = document.getElementById('kmInput').value;
-        document.getElementById('priceResult').innerText = "السعر: " + (km * 15) + " ل.ت";
-    }
-
+    // وظائف عرض الهيبة
     function toggleHeiba() {
         var content = document.getElementById("heibaContent");
-        content.
+        content.style.display = (content.style.display === "block") ? "none" : "block";
+    }
+
+    function mark(num) {
+        selectedTawsila = num;
+        let circles = document.querySelectorAll('.circle');
+        circles.forEach((c, i) => i < num ? c.classList.add('active') : c.classList.remove('active'));
+        document.getElementById('congrats').innerText = num >= 6 ? "توصيلتك الجاية مجانية مبروك! 🎉" : "";
+    }
+
+    function saveAndNotify() {
+        const name = document.getElementById('custName').value;
+        const phone = document.getElementById('custPhone').value;
+        const myNumber = "963957352181";
+        if(!name || !phone || selectedTawsila === 0) {
+            alert("يا غالي عبي البيانات كاملة أولاً");
+            return;
+        }
+        const message = `طلب حفظ توصيلة جديدة:\n👤 الاسم: ${name}\n📱 الرقم: ${phone}\n🔢 رقم التوصيلة: ${selectedTawsila}`;
+        window.open(`https://wa.me/${myNumber}?text=${encodeURIComponent(message)}`, '_blank');
+    }
+</script>
+</body>
+</html>
