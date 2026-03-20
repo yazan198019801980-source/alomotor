@@ -7,149 +7,88 @@
     <style>
         body { 
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-            margin: 0; 
-            padding: 0; 
-            min-height: 100vh;
-            text-align: center;
-            background-color: #1a1a1a; 
-            color: white;
+            margin: 0; padding: 0; min-height: 100vh; text-align: center;
+            background-color: #1a1a1a; color: white;
         }
-
-        .overlay {
-            background-color: rgba(0, 0, 0, 0.85); 
-            min-height: 100vh;
-            width: 100%;
-            padding-bottom: 30px;
-        }
-
-        .header { 
-            background-color: #25D366; 
-            padding: 20px; 
-            color: #1a1a1a; 
-            border-bottom: 4px solid #ffcc00; 
-        }
-
-        .brand-name {
-            font-size: 34px;
-            font-weight: 900;
-            margin: 0;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
-
+        .overlay { background-color: rgba(0, 0, 0, 0.85); min-height: 100vh; padding-bottom: 30px; }
+        .header { background-color: #25D366; padding: 20px; color: #1a1a1a; border-bottom: 4px solid #ffcc00; }
+        .brand-name { font-size: 32px; font-weight: 900; margin: 0; }
         .container { padding: 15px; }
-
         .card { 
-            background-color: rgba(45, 45, 45, 0.9); 
-            margin: 15px 0; 
-            padding: 25px; 
-            border-radius: 15px; 
-            border-right: 6px solid #ffcc00; 
-            color: white;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.7);
+            background-color: rgba(45, 45, 45, 0.9); margin: 15px 0; padding: 25px; 
+            border-radius: 15px; border-right: 6px solid #ffcc00; box-shadow: 0 5px 20px rgba(0,0,0,0.7);
         }
-
-        .input-group {
-            margin-top: 15px;
-            text-align: right;
-        }
-
-        .input-label {
-            display: block;
-            font-weight: bold;
-            margin-bottom: 5px;
-            color: #ffcc00;
-        }
-
+        .input-group { margin-top: 15px; text-align: right; }
+        .input-label { display: block; font-weight: bold; margin-bottom: 5px; color: #ffcc00; }
         input { 
-            width: 100%; 
-            padding: 12px; 
-            border-radius: 8px; 
-            border: 2px solid #ffcc00; 
-            text-align: center; 
-            font-size: 18px; 
-            font-weight: bold;
-            background-color: #fff;
-            color: #000;
-            box-sizing: border-box;
+            width: 100%; padding: 12px; border-radius: 8px; border: 2px solid #ffcc00; 
+            text-align: center; font-size: 18px; font-weight: bold; box-sizing: border-box;
         }
-
-        .price-box { 
-            background-color: rgba(255, 204, 0, 0.1); 
-            padding: 15px; 
-            border-radius: 10px; 
-            margin-top: 15px; 
-        }
-
-        .result { font-size: 28px; color: #ffcc00; font-weight: bold; margin-top: 10px; }
-
+        .price-box { background-color: rgba(255, 204, 0, 0.1); padding: 15px; border-radius: 10px; margin-top: 15px; }
+        .result { font-size: 28px; color: #ffcc00; font-weight: bold; }
+        
+        /* الأزرار مع النبض */
         .btn { 
-            display: block; 
-            width: 90%; 
-            margin: 15px auto; 
-            padding: 18px; 
-            border-radius: 12px; 
-            text-decoration: none; 
-            font-weight: bold; 
-            font-size: 20px; 
-            color: white; 
+            display: block; width: 90%; margin: 15px auto; padding: 18px; border-radius: 12px; 
+            text-decoration: none; font-weight: bold; font-size: 20px; color: white; 
+            animation: pulse 2s infinite; 
         }
-
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+            100% { transform: scale(1); }
+        }
         .btn-whatsapp { background-color: #25D366; }
         .btn-call { background-color: #007bff; }
         .btn-sms { background-color: #f39c12; }
-        
-        .footer { font-size: 14px; color: #aaa; margin-top: 30px; font-weight: bold;}
+        .footer { font-size: 14px; color: #aaa; margin-top: 30px; }
     </style>
 </head>
 <body>
-
     <div class="overlay">
-
-        <div class="header">
-            <h1 class="brand-name">🏍️ آلُو مٌوَتُوَڕ أَبُو يٌزَنَ 🏍️</h1>
-        </div>
-
+        <div class="header"><h1 class="brand-name">🏍️ آلُو مٌوَتُوَڕ أَبُو يٌزَنَ </h1></div>
         <div class="container">
             <div class="card">
                 <h3>📍 مناطق الخدمة</h3>
                 <p>إدلب - سرمدا - الدانا وما حولهم</p>
-                <p style="font-size: 14px; color: #ccc;">🕒 الدوام: من 5:00 مساءً وحتى 2:00 صباحاً</p>
+                <p style="font-size: 14px; color: #ccc;">🕒 من 5:00 مساءً وحتى 2:00 صباحاً</p>
             </div>
-
             <div class="card">
                 <h3>💰 حاسبة سعر التوصيل</h3>
-                
                 <div class="input-group">
                     <label class="input-label">موقعك الحالي:</label>
-                    <input type="text" id="loc_from" placeholder="مثال: سرمدا - ساحة الساعة">
+                    <input type="text" id="loc_from" placeholder="مثلاً: سرمدا">
                 </div>
-                
                 <div class="input-group">
                     <label class="input-label">الجهة المطلوبة:</label>
-                    <input type="text" id="loc_to" placeholder="مثال: الدانا - الطريق العام">
+                    <input type="text" id="loc_to" placeholder="مثلاً: الدانا">
                 </div>
-
                 <div class="input-group">
-                    <label class="input-label">المسافة التقديرية (كيلومتر):</label>
-                    <input type="number" id="distance" placeholder="مثلاً: 10" oninput="calculatePrice()">
+                    <label class="input-label">المسافة (كيلومتر):</label>
+                    <input type="number" id="distance" placeholder="0" oninput="calculatePrice()">
                 </div>
-
                 <div class="price-box">
                     <div id="totalPrice" class="result">السعر: 0 ل.ت</div>
-                    <p style="font-size: 14px; color: #ccc;">(15 ليرة تركية لكل 1 كم)</p>
                 </div>
             </div>
-
             <div class="card">
-                <h3>📞 اطلب كفو الآن</h3>
+                <h3>📞 اطلب الآن</h3>
                 <a href="https://wa.me/963957352181" class="btn btn-whatsapp">💬 واتساب</a>
                 <a href="tel:+963957352181" class="btn btn-call">📞 اتصال مباشر</a>
-                <a href="sms:+963957352181" class="btn btn-sms">✉️ رسالة نصية SMS</a>
             </div>
         </div>
-
-        <p class="footer">تم التطوير لعيون أبو يزن الغالي 🏍️✨</p>
-
+        <p class="footer">تم التطوير لعيون أبو يزن الغالي 🏍️</p>
     </div>
-
     <script>
+        function calculatePrice() {
+            var dist = document.getElementById('distance').value;
+            var res = document.getElementById('totalPrice');
+            if(dist > 0) {
+                res.innerText = "السعر: " + (dist * 15) + " ل.ت";
+            } else {
+                res.innerText = "السعر: 0 ل.ت";
+            }
+        }
+    </script>
+</body>
+</html>
