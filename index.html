@@ -19,7 +19,7 @@
         .ramadan-wish { font-size: 22px; color: #ffcc00; font-weight: bold; animation: glow 1.5s infinite; }
         .input-group { text-align: right; margin-bottom: 10px; }
         label { color: #ffcc00; font-weight: bold; display: block; margin-bottom: 5px; }
-        input { width: 100%; padding: 12px; border-radius: 10px; border: 2px solid #ffcc00; text-align: center; font-size: 18px; font-weight: bold; box-sizing: border-box; }
+        input { width: 100%; padding: 12px; border-radius: 10px; border: 2px solid #ffcc00; text-align: center; font-size: 18px; font-weight: bold; box-sizing: border-box; background: white; color: black; }
         .result-box { font-size: 30px; color: #ffcc00; font-weight: bold; margin-top: 15px; padding: 15px; border: 2px dashed #ffcc00; border-radius: 15px; background: rgba(255,204,0,0.1); }
         .heiba-btn { background: linear-gradient(45deg, #ffcc00, #b89600); color: #000; padding: 15px; border-radius: 10px; cursor: pointer; font-weight: 900; width: 100%; border: none; font-size: 18px; }
         .hidden-content { display: none; padding: 20px 0; }
@@ -58,8 +58,8 @@
             <button class="heiba-btn" onclick="toggleHeiba()">اضغط وانظر لعرض الهيبة</button>
             <div id="heibaContent" class="hidden-content">
                 <h3 style="color: #ffcc00;">كل 6 توصيلات والسابعة مجاناً</h3>
-                <input type="text" id="custName" placeholder="اسمك المسجل عندنا">
-                <input type="text" id="custPhone" placeholder="رقم هاتفك">
+                <input type="text" id="custName" placeholder="اسمك المسجل عندنا" style="margin-bottom:10px">
+                <input type="text" id="custPhone" placeholder="رقم هاتفك" style="margin-bottom:10px">
                 <div class="circle-group" id="circles">
                     <div class="circle" onclick="mark(1)">1</div>
                     <div class="circle" onclick="mark(2)">2</div>
@@ -97,7 +97,8 @@
 
     function calculate() {
         const km = document.getElementById('kmInput').value;
-        document.getElementById('priceResult').innerText = "السعر: " + (km * 10) + " ل.ت";
+        // السعر 15 ليرة لكل كيلومتر
+        document.getElementById('priceResult').innerText = "السعر: " + (km * 15) + " ل.ت";
     }
 
     function toggleHeiba() {
@@ -115,7 +116,7 @@
     function saveAndNotify() {
         const name = document.getElementById('custName').value;
         const phone = document.getElementById('custPhone').value;
-        const myNumber = "963957352181"; // رقمك يا أبو يزن
+        const myNumber = "963957352181";
 
         if(!name || !phone || selectedTawsila === 0) {
             alert("يا غالي عبي الاسم والرقم واختار رقم التوصيلة أولاً");
@@ -123,11 +124,8 @@
         }
 
         const message = `طلب حفظ توصيلة جديدة:\n👤 الاسم: ${name}\n📱 الرقم: ${phone}\n🔢 رقم التوصيلة: ${selectedTawsila}\n🏍️ ألو موتور - عرض الهيبة`;
-        
-        // فتح واتساب لإرسال الرسالة لك
         const wpUrl = `https://wa.me/${myNumber}?text=${encodeURIComponent(message)}`;
         window.open(wpUrl, '_blank');
-        
         alert("تم الحفظ! سيتم الآن إرسال إشعار لأبو يزن لتثبيت التوصيلة.");
     }
 </script>
