@@ -58,8 +58,8 @@
             <button class="heiba-btn" onclick="toggleHeiba()">اضغط وانظر لعرض الهيبة</button>
             <div id="heibaContent" class="hidden-content">
                 <h3 style="color: #ffcc00;">كل 6 توصيلات والسابعة مجاناً</h3>
-                <input type="text" id="custName" placeholder="اسمك المسجل عندنا" style="margin-bottom:10px">
-                <input type="text" id="custPhone" placeholder="رقم هاتفك" style="margin-bottom:10px">
+                <input type="text" id="custName" placeholder="اسمك المسجل عندنا" style="margin-bottom: 10px;">
+                <input type="text" id="custPhone" placeholder="رقم هاتفك" style="margin-bottom: 10px;">
                 <div class="circle-group" id="circles">
                     <div class="circle" onclick="mark(1)">1</div>
                     <div class="circle" onclick="mark(2)">2</div>
@@ -97,7 +97,7 @@
 
     function calculate() {
         const km = document.getElementById('kmInput').value;
-        // السعر 15 ليرة لكل كيلومتر
+        // تم تثبيت السعر على 15 ليرة
         document.getElementById('priceResult').innerText = "السعر: " + (km * 15) + " ل.ت";
     }
 
