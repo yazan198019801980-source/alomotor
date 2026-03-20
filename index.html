@@ -11,12 +11,12 @@
             background-color: #1a1a1a; color: white;
         }
         .overlay { background-color: rgba(0, 0, 0, 0.85); min-height: 100vh; padding-bottom: 30px; }
-        .header { background-color: #25D366; padding: 20px; color: #1a1a1a; border-bottom: 4px solid #ffcc00; }
-        .brand-name { font-size: 32px; font-weight: 900; margin: 0; }
+        .header { background-color: #25D366; padding: 20px; color: black; border-bottom: 4px solid #ffcc00; }
+        .brand-name { font-size: 30px; font-weight: bold; margin: 0; }
         .container { padding: 15px; }
         .card { 
-            background-color: rgba(45, 45, 45, 0.9); margin: 15px 0; padding: 25px; 
-            border-radius: 15px; border-right: 6px solid #ffcc00; box-shadow: 0 5px 20px rgba(0,0,0,0.7);
+            background-color: rgba(45, 45, 45, 0.9); margin: 15px 0; padding: 20px; 
+            border-radius: 12px; border-right: 6px solid #ffcc00; box-shadow: 0 4px 15px rgba(0,0,0,0.6);
         }
         .input-group { margin-top: 15px; text-align: right; }
         .input-label { display: block; font-weight: bold; margin-bottom: 5px; color: #ffcc00; }
@@ -24,69 +24,91 @@
             width: 100%; padding: 12px; border-radius: 8px; border: 2px solid #ffcc00; 
             text-align: center; font-size: 18px; font-weight: bold; box-sizing: border-box;
         }
-        .price-box { background-color: rgba(255, 204, 0, 0.1); padding: 15px; border-radius: 10px; margin-top: 15px; }
-        .result { font-size: 28px; color: #ffcc00; font-weight: bold; }
+        .price-box { background-color: rgba(255, 204, 0, 0.15); padding: 15px; border-radius: 10px; margin-top: 15px; }
+        .result { font-size: 26px; color: #ffcc00; font-weight: bold; }
         
-        /* الأزرار مع النبض */
-        .btn { 
-            display: block; width: 90%; margin: 15px auto; padding: 18px; border-radius: 12px; 
-            text-decoration: none; font-weight: bold; font-size: 20px; color: white; 
-            animation: pulse 2s infinite; 
-        }
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.03); }
-            100% { transform: scale(1); }
-        }
+        /* قسم الهدية */
+        .gift-box { background-color: #ffcc00; color: black; padding: 10px; border-radius: 10px; margin-top: 10px; font-weight: bold; display: none; animation: bounce 1s infinite; }
+        @keyframes bounce { 0%, 100% {transform: translateY(0);} 50% {transform: translateY(-5px);} }
+
+        .btn { display: block; width: 90%; margin: 12px auto; padding: 15px; border-radius: 10px; text-decoration: none; font-weight: bold; font-size: 19px; color: white; transition: 0.3s; }
         .btn-whatsapp { background-color: #25D366; }
         .btn-call { background-color: #007bff; }
-        .btn-sms { background-color: #f39c12; }
-        .footer { font-size: 14px; color: #aaa; margin-top: 30px; }
+        .footer { font-size: 12px; color: #aaa; margin-top: 20px; }
     </style>
 </head>
 <body>
     <div class="overlay">
-        <div class="header"><h1 class="brand-name">🏍️ آلُو مٌوَتُوَڕ أَبُو يٌزَنَ </h1></div>
+        <div class="header">
+            <h1 class="brand-name">🏍️ آلُو مٌوَتُوَڕ أَبُو يٌزَنَ 🏍️</h1>
+        </div>
         <div class="container">
             <div class="card">
                 <h3>📍 مناطق الخدمة</h3>
                 <p>إدلب - سرمدا - الدانا وما حولهم</p>
-                <p style="font-size: 14px; color: #ccc;">🕒 من 5:00 مساءً وحتى 2:00 صباحاً</p>
+                <p style="font-size: 13px; color: #ccc;">🕒 الدوام: من 5:00 مساءً وحتى 2:00 صباحاً</p>
             </div>
+
+            <div class="card">
+                <h3>🎁 برنامج الوفاء (6+1)</h3>
+                <p>سجل توصيلاتك هنا.. السابعة مجانية!</p>
+                <div id="counter-text" style="font-size: 20px; font-weight: bold; color: #ffcc00;">عدد توصيلاتك الحالية: 0</div>
+                <button onclick="addDelivery()" style="margin-top: 10px; padding: 10px 20px; border-radius: 5px; border: none; background: #ffcc00; font-weight: bold; cursor: pointer;">اضغط لتسجيل توصيلة ✅</button>
+                <div id="gift-msg" class="gift-box">مبروك! توصيلتك القادمة مجانية من ألو موتور 🎁</div>
+                <button onclick="resetCounter()" style="margin-top: 10px; background: none; border: none; color: #aaa; font-size: 12px; text-decoration: underline;">تصفير العداد</button>
+            </div>
+
             <div class="card">
                 <h3>💰 حاسبة سعر التوصيل</h3>
-                <div class="input-group">
-                    <label class="input-label">موقعك الحالي:</label>
-                    <input type="text" id="loc_from" placeholder="مثلاً: سرمدا">
-                </div>
-                <div class="input-group">
-                    <label class="input-label">الجهة المطلوبة:</label>
-                    <input type="text" id="loc_to" placeholder="مثلاً: الدانا">
-                </div>
-                <div class="input-group">
-                    <label class="input-label">المسافة (كيلومتر):</label>
-                    <input type="number" id="distance" placeholder="0" oninput="calculatePrice()">
-                </div>
+                <div class="input-group"><label class="input-label">📍 من وين؟</label><input type="text" placeholder="سرمدا"></div>
+                <div class="input-group"><label class="input-label">🏁 لوين؟</label><input type="text" placeholder="الدانا"></div>
+                <div class="input-group"><label class="input-label">📏 المسافة (كم):</label><input type="number" id="distance" placeholder="0" oninput="calculatePrice()"></div>
                 <div class="price-box">
                     <div id="totalPrice" class="result">السعر: 0 ل.ت</div>
                 </div>
             </div>
+
             <div class="card">
-                <h3>📞 اطلب الآن</h3>
+                <h3>📞 اطلب كفو الآن</h3>
                 <a href="https://wa.me/963957352181" class="btn btn-whatsapp">💬 واتساب</a>
                 <a href="tel:+963957352181" class="btn btn-call">📞 اتصال مباشر</a>
             </div>
         </div>
-        <p class="footer">تم التطوير لعيون أبو يزن الغالي 🏍️</p>
+        <p class="footer">تم التطوير لعيون أبو يزن الغالي 🏍️✨</p>
     </div>
+
     <script>
+        // كود الحاسبة
         function calculatePrice() {
-            var dist = document.getElementById('distance').value;
+            var d = document.getElementById('distance').value;
             var res = document.getElementById('totalPrice');
-            if(dist > 0) {
-                res.innerText = "السعر: " + (dist * 15) + " ل.ت";
+            if(d > 0) { res.innerHTML = "السعر: " + (d * 15) + " ل.ت"; }
+            else { res.innerHTML = "السعر: 0 ل.ت"; }
+        }
+
+        // كود عداد الـ 6 توصيلات (يحفظ في ذاكرة المتصفح)
+        let count = localStorage.getItem('deliveryCount') || 0;
+        updateDisplay();
+
+        function addDelivery() {
+            count++;
+            if (count > 6) count = 0; // يصفر بعد السابعة
+            localStorage.setItem('deliveryCount', count);
+            updateDisplay();
+        }
+
+        function resetCounter() {
+            count = 0;
+            localStorage.setItem('deliveryCount', count);
+            updateDisplay();
+        }
+
+        function updateDisplay() {
+            document.getElementById('counter-text').innerText = "عدد توصيلاتك الحالية: " + count;
+            if (count == 6) {
+                document.getElementById('gift-msg').style.display = 'block';
             } else {
-                res.innerText = "السعر: 0 ل.ت";
+                document.getElementById('gift-msg').style.display = 'none';
             }
         }
     </script>
