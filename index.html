@@ -13,11 +13,14 @@
         body { font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; background-color: #1a1a1a; color: white; text-align: center; }
         .overlay { background-color: rgba(0, 0, 0, 0.9); min-height: 100vh; padding-bottom: 40px; }
         .header { background-color: #25D366; padding: 25px; border-bottom: 5px solid #ffcc00; }
-        .brand-name { font-size: 26px; font-weight: 900; animation: glow 2s infinite; color: #1a1a1a; line-height: 1.6; cursor: pointer; }
+        .brand-name { font-size: 26px; font-weight: 900; animation: glow 2s infinite; color: #1a1a1a; line-height: 1.6; }
         .container { padding: 15px; max-width: 500px; margin: auto; }
         .card { background-color: #2d2d2d; margin: 20px 0; padding: 20px; border-radius: 20px; border: 1px solid #444; }
+        
+        /* كرت العطلة اللي بيشوفه الزبون */
         .status-card { background-color: #931a1a; border: 2px solid #ff4444; display: none; margin-bottom: 15px; padding: 15px; border-radius: 15px; } 
         .status-text { font-size: 18px; font-weight: bold; color: white; margin: 0; }
+
         .ramadan-wish { font-size: 22px; color: #ffcc00; font-weight: bold; animation: glow 1.5s infinite; }
         input { width: 100%; padding: 12px; border-radius: 10px; border: 2px solid #ffcc00; text-align: center; font-size: 18px; font-weight: bold; box-sizing: border-box; background: white; color: black; margin-bottom: 10px; }
         .result-box { font-size: 30px; color: #ffcc00; font-weight: bold; margin-top: 15px; padding: 15px; border: 2px dashed #ffcc00; border-radius: 15px; background: rgba(255,204,0,0.1); }
@@ -31,14 +34,17 @@
         .btn-call { background-color: #007bff; border-bottom: 4px solid #0056b3; }
         .btn-sms { background-color: #f39c12; border-bottom: 4px solid #d35400; }
         .footer-msg { font-size: 20px; font-weight: bold; color: #ffcc00; margin-top: 20px; }
-        #adminPanel { display: none; border: 2px dashed #ffcc00; padding: 15px; margin-top: 10px; border-radius: 15px; }
+
+        /* لوحة تحكم أبو يزن - بتظهر بس لما تضغط على "إدارة" */
+        #adminPanel { display: none; margin-top: 10px; border: 2px dashed #ffcc00; padding: 10px; border-radius: 10px; background: #222; }
     </style>
 </head>
 <body>
 
 <div class="overlay">
-    <div class="header" onclick="toggleAdmin()">
-        <div class="brand-name">🏍️ أَلُو مٌوتُور <span style="text-decoration: underline;">أَبُو يَزَن</span> 🏍️<br>ALO MOTOR EBU YEZEN</div>
+    <div class="header">
+        <div class="brand-name">🏍️ أَلُو مٌوتُور أَبُو يَزَن 🏍️<br>ALO MOTOR EBU YEZEN</div>
+        <button onclick="toggleAdmin()" style="background:none; border:none; color:#1a1a1a; font-size:10px; cursor:pointer;">إدارة</button>
     </div>
 
     <div class="container">
@@ -46,12 +52,12 @@
             <p id="holidayMsg" class="status-text"></p>
         </div>
 
-        <div id="adminPanel" class="card">
-            <h4 style="color: #ffcc00; margin-top: 0;">⚙️ لوحة تحكم أبو يزن (سرية)</h4>
-            <input type="text" id="statusInput" placeholder="اكتب سبب العطلة هنا...">
-            <div style="display: flex; gap: 10px;">
-                <button onclick="updateStatus()" style="flex: 1; padding: 10px; background: #25D366; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;">تفعيل العطلة</button>
-                <button onclick="clearStatus()" style="flex: 1; padding: 10px; background: #ff4444; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;">إنهاء العطلة</button>
+        <div id="adminPanel">
+            <h4 style="color:#ffcc00; margin:5px 0;">لوحة تحكم العطلة</h4>
+            <input type="text" id="statusInput" placeholder="اكتب سبب العطلة هنا">
+            <div style="display: flex; gap: 5px;">
+                <button onclick="activateHoliday()" style="flex:1; background:#25D366; border:none; padding:10px; font-weight:bold; border-radius:5px;">تفعيل العطلة</button>
+                <button onclick="deactivateHoliday()" style="flex:1; background:#ff4444; color:white; border:none; padding:10px; font-weight:bold; border-radius:5px;">إلغاء (شغال)</button>
             </div>
         </div>
 
@@ -80,7 +86,7 @@
                     <div class="circle" onclick="mark(6)">6</div>
                 </div>
                 <div id="congrats" style="color: #25D366; font-weight: bold; margin: 10px 0;"></div>
-                <button onclick="saveAndNotify()" style="width: 100%; padding: 12px; background: white; color: black; border: none; border-radius: 10px; font-weight: bold; cursor: pointer;">✅ إرسال واتساب لأبو يزن</button>
+                <button onclick="saveToWp()" style="width: 100%; padding: 12px; background: white; color: black; border: none; border-radius: 10px; font-weight: bold; cursor: pointer;">✅ إرسال واتساب لأبو يزن</button>
             </div>
         </div>
 
@@ -104,12 +110,38 @@
 </div>
 
 <script>
-    let selectedTawsila = 0;
+    let selectedNum = 0;
 
-    // إظهار وإخفاء لوحة التحكم (بالضغط على الاسم فوق)
+    // إظهار لوحة التحكم السرية
     function toggleAdmin() {
-        const panel = document.getElementById('adminPanel');
-        panel.style.display = (panel.style.display === 'block') ? 'none' : 'block';
+        var x = document.getElementById("adminPanel");
+        x.style.display = (x.style.display === "block") ? "none" : "block";
+    }
+
+    // تفعيل العطلة
+    function activateHoliday() {
+        var msg = document.getElementById("statusInput").value;
+        if(msg) {
+            document.getElementById("holidayCard").style.display = "block";
+            document.getElementById("holidayMsg").innerText = "اليوم عطلة بسبب: " + msg;
+            localStorage.setItem("holiday_reason", msg);
+        }
+    }
+
+    // إلغاء العطلة
+    function deactivateHoliday() {
+        document.getElementById("holidayCard").style.display = "none";
+        localStorage.removeItem("holiday_reason");
+        document.getElementById("statusInput").value = "";
+    }
+
+    // لما يفتح الموقع يتأكد إذا في عطلة مخزنة
+    window.onload = function() {
+        var saved = localStorage.getItem("holiday_reason");
+        if(saved) {
+            document.getElementById("holidayCard").style.display = "block";
+            document.getElementById("holidayMsg").innerText = "اليوم عطلة بسبب: " + saved;
+        }
     }
 
     function calculate() {
@@ -117,49 +149,24 @@
         document.getElementById('priceResult').innerText = "السعر: " + (km * 15) + " ل.ت";
     }
 
-    function updateStatus() {
-        const reason = document.getElementById('statusInput').value;
-        if(reason) {
-            document.getElementById('holidayCard').style.display = 'block';
-            document.getElementById('holidayMsg').innerText = "اليوم عطلة بسبب: " + reason;
-            localStorage.setItem('alo_holiday', reason);
-            alert("تم تفعيل العطلة بنجاح!");
-        }
-    }
-
-    function clearStatus() {
-        document.getElementById('holidayCard').style.display = 'none';
-        localStorage.removeItem('alo_holiday');
-        document.getElementById('statusInput').value = "";
-        alert("تم إلغاء العطلة والعودة للعمل!");
-    }
-
-    window.onload = function() {
-        const saved = localStorage.getItem('alo_holiday');
-        if(saved) {
-            document.getElementById('holidayCard').style.display = 'block';
-            document.getElementById('holidayMsg').innerText = "اليوم عطلة بسبب: " + saved;
-        }
-    }
-
     function toggleHeiba() {
-        const content = document.getElementById("heibaContent");
-        content.style.display = (content.style.display === "block") ? "none" : "block";
+        var h = document.getElementById("heibaContent");
+        h.style.display = (h.style.display === "block") ? "none" : "block";
     }
 
-    function mark(num) {
-        selectedTawsila = num;
-        let circles = document.querySelectorAll('.circle');
-        circles.forEach((c, i) => i < num ? c.classList.add('active') : c.classList.remove('active'));
-        document.getElementById('congrats').innerText = num >= 6 ? "توصيلتك الجاية مجانية مبروك! 🎉" : "";
+    function mark(n) {
+        selectedNum = n;
+        let cs = document.querySelectorAll('.circle');
+        cs.forEach((c, i) => i < n ? c.classList.add('active') : c.classList.remove('active'));
+        document.getElementById('congrats').innerText = n >= 6 ? "توصيلتك الجاية مجانية! 🎉" : "";
     }
 
-    function saveAndNotify() {
+    function saveToWp() {
         const name = document.getElementById('custName').value;
         const phone = document.getElementById('custPhone').value;
-        if(!name || !phone || selectedTawsila === 0) { alert("يا غالي عبي البيانات كاملة"); return; }
-        const message = `طلب تثبيت توصيلة:\n👤 الاسم: ${name}\n📱 الرقم: ${phone}\n🔢 التوصيلة رقم: ${selectedTawsila}`;
-        window.open(`https://wa.me/963957352181?text=${encodeURIComponent(message)}`, '_blank');
+        if(!name || !phone || selectedNum === 0) { alert("عبي البيانات كاملة"); return; }
+        const text = `تثبيت توصيلة:\n👤 الاسم: ${name}\n📱 الرقم: ${phone}\n🔢 التوصيلة: ${selectedNum}`;
+        window.open(`https://wa.me/963957352181?text=${encodeURIComponent(text)}`, '_blank');
     }
 </script>
 </body>
