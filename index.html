@@ -9,7 +9,6 @@
         @keyframes ring-glow { 0% { box-shadow: 0 0 5px #ffcc00; } 50% { box-shadow: 0 0 25px #ffcc00, 0 0 35px #fff; } 100% { box-shadow: 0 0 5px #ffcc00; } }
         @keyframes button-shine { 0% { box-shadow: 0 0 5px #ffcc00; } 50% { box-shadow: 0 0 20px #ffcc00; } 100% { box-shadow: 0 0 5px #ffcc00; } }
 
-        /* الموتور الأحمر الشفاف 60% */
         @keyframes bikeTransparentRun { 
             0% { right: -300px; opacity: 0; transform: scale(3); } 
             20% { opacity: 0.6; } 
@@ -28,10 +27,10 @@
 
         input { width: 100%; padding: 12px; margin: 8px 0; border-radius: 10px; border: 2px solid #ffcc00; text-align: center; font-size: 18px; font-weight: bold; box-sizing: border-box; background: white; color: black; }
         .btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 18px; border-radius: 15px; text-decoration: none; font-weight: bold; font-size: 18px; margin: 10px 0; border: none; cursor: pointer; }
-        .btn-location { background: linear-gradient(45deg, #ffcc00, #ff9900); color: #000; border-bottom: 5px solid #b89600; }
+        .btn-location { background: linear-gradient(45deg, #ffcc00, #ff9900); color: #000; border-bottom: 5px solid #b89600; font-weight: 900; }
         .btn-whatsapp { background: #25D366; color: white; border-bottom: 4px solid #128C7E; }
-        .heiba-btn { animation: button-shine 2s infinite; }
-        .circle { width: 55px; height: 55px; border-radius: 50%; border: 3px solid #ffcc00; line-height: 48px; cursor: pointer; font-weight: 900; font-size: 24px; color: #ffcc00; background: transparent; transition: 0.3s; }
+        .heiba-btn { animation: button-shine 2s infinite; cursor: pointer; }
+        .circle { width: 55px; height: 55px; border-radius: 50%; border: 3px solid #ffcc00; line-height: 48px; cursor: pointer; font-weight: 900; font-size: 24px; color: #ffcc00; background: transparent; display: inline-block; margin: 5px; transition: 0.3s; }
         .circle.active { background: #ffcc00; color: #000; animation: ring-glow 1s infinite; transform: scale(1.1); }
         .footer-credits { font-size: 12px; color: #777; margin-top: 20px; padding-bottom: 20px; }
     </style>
@@ -48,9 +47,8 @@
     <div class="container">
         <div id="adminPanel" style="display: none; background: #333; border: 2px dashed #ffcc00; padding: 15px; border-radius: 15px; margin-bottom: 20px; text-align: right;">
             <h4 style="color: #ffcc00; text-align:center;">⚙️ إعدادات الإدارة</h4>
-            <label>🔑 تغيير شفرة الدخول:</label>
             <input type="password" id="newPass" placeholder="الشفرة الجديدة">
-            <button onclick="localStorage.setItem('admin_pass', document.getElementById('newPass').value); alert('تم تغيير الشفرة بنجاح');" style="width:100%; padding:10px; background:#ffcc00; border-radius:10px; font-weight:bold;">حفظ الشفرة الجديدة</button>
+            <button onclick="savePass()" style="width:100%; padding:10px; background:#ffcc00; border-radius:10px; font-weight:bold; cursor:pointer;">حفظ الشفرة</button>
         </div>
 
         <div class="card">
@@ -65,15 +63,19 @@
         </div>
 
         <div class="card">
-            <button onclick="document.getElementById('heiba').style.display='block'" class="heiba-btn" style="background: linear-gradient(45deg, #ffcc00, #b89600); color: #000; padding: 15px; border-radius: 10px; width: 100%; border: none; font-weight: 900; font-size: 18px; cursor:pointer;">🎁 عرض الهيبة.. اضغط هنا</button>
+            <button onclick="toggleHeiba()" class="heiba-btn" style="background: linear-gradient(45deg, #ffcc00, #b89600); color: #000; padding: 15px; border-radius: 10px; width: 100%; border: none; font-weight: 900; font-size: 18px;">🎁 عرض الهيبة.. اضغط هنا</button>
             <div id="heiba" style="display:none; padding-top:20px;">
                 <input type="text" id="cName" placeholder="الاسم المسجل">
                 <input type="text" id="cPhone" placeholder="رقم الهاتف">
-                <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin: 15px 0;">
-                    <script>for(let i=1; i<=6; i++){ document.write(`<div class="circle" onclick="mark(${i})">${i}</div>`); }</script>
+                <div id="circlesContainer" style="margin: 15px 0;">
+                    <div class="circle" onclick="mark(1)">1</div>
+                    <div class="circle" onclick="mark(2)">2</div>
+                    <div class="circle" onclick="mark(3)">3</div>
+                    <div class="circle" onclick="mark(4)">4</div>
+                    <div class="circle" onclick="mark(5)">5</div>
+                    <div class="circle" onclick="mark(6)">6</div>
                 </div>
-                <div id="congrats" style="color: #25D366; font-weight: bold; margin: 10px 0;"></div>
-                <button onclick="sendHeiba()" class="btn" style="background: white; color: black; border: 3px solid #ffcc00; font-size:16px;">أرسل الاشتراك إلى أبو يزن</button>
+                <button onclick="sendHeiba()" class="btn" style="background: white; color: black; border: 3px solid #ffcc00;">أرسل الاشتراك إلى أبو يزن</button>
             </div>
         </div>
 
@@ -84,9 +86,7 @@
             <hr style="border:0.5px solid #444;">
             <h3 style="color: #ffcc00;">📍 مناطق الخدمة</h3>
             <p style="font-size: 18px; font-weight: bold;">إدلب . حلب . سرمدا . الدانا . وماحولها</p>
-            <p>🕒 الدوام: من 5 مساءً وحتى 2 صباحاً</p>
             <h2 style="animation: glow 1.5s infinite; color: #ffcc00;">انتظرو عرض الهيبة</h2>
-            <p>نتمنى لكم الصحة والعافية ✨</p>
         </div>
         
         <div class="footer-credits">جميع الحقوق محفوظة © ألو موتور أبو يزن 2026</div>
@@ -95,13 +95,64 @@
     <script>
         let selectedMark = 0;
         function getPass() { return localStorage.getItem("admin_pass") || "1234"; }
-        function checkPass() { if(prompt("أدخل شفرة الإدارة:") === getPass()) document.getElementById('adminPanel').style.display='block'; else alert("غلط!"); }
+        
+        function checkPass() {
+            let p = prompt("أدخل شفرة الإدارة:");
+            if(p === getPass()) {
+                document.getElementById('adminPanel').style.display = 'block';
+            } else {
+                alert("الشفرة غلط يا غالي");
+            }
+        }
+
+        function savePass() {
+            let np = document.getElementById('newPass').value;
+            if(np) {
+                localStorage.setItem('admin_pass', np);
+                alert("تم حفظ الشفرة الجديدة");
+            }
+        }
+
+        function toggleHeiba() {
+            let h = document.getElementById('heiba');
+            h.style.display = (h.style.display === 'none') ? 'block' : 'none';
+        }
         
         function mark(n) {
             selectedMark = n;
-            document.querySelectorAll('.circle').forEach((c, i) => i < n ? c.classList.add('active') : c.classList.remove('active'));
-            document.getElementById('congrats').innerText = n >= 6 ? "توصيلتك الجاية مجانية مبروك! 🎉" : "";
+            let circles = document.querySelectorAll('.circle');
+            circles.forEach((c, i) => {
+                if(i < n) c.classList.add('active');
+                else c.classList.remove('active');
+            });
         }
 
         function sendLocation() {
-            const options = { enableHighAccuracy: true, timeout: 5000, maximumAge:
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(p => {
+                    window.open("https://www.google.com/maps?q=" + p.coords.latitude + "," + p.coords.longitude);
+                }, () => alert("يرجى تفعيل الـ GPS"));
+            }
+        }
+
+        function sendHeiba() {
+            let n = document.getElementById('cName').value;
+            let p = document.getElementById('cPhone').value;
+            if(!n || !p || selectedMark === 0) {
+                alert("عبي البيانات واختار رقم التوصيلة");
+                return;
+            }
+            let msg = "اشتراك هيبة جديد:%0Aالاسم: " + n + "%0Aالرقم: " + p + "%0Aالتوصيلة رقم: " + selectedMark;
+            window.open("https://wa.me/963957352181?text=" + msg);
+        }
+
+        function runTransBike() {
+            let b = document.getElementById('transBike');
+            if(!b.classList.contains('active')) {
+                b.classList.add('active');
+                setTimeout(() => b.classList.remove('active'), 1500);
+            }
+        }
+    </script>
+</body>
+</html>
