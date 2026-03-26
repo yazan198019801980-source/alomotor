@@ -8,11 +8,14 @@
         @keyframes glow { 0% { text-shadow: 0 0 10px #ffcc00; } 50% { text-shadow: 0 0 20px #fff; } 100% { text-shadow: 0 0 10px #ffcc00; } }
         @keyframes ring-glow { 0% { box-shadow: 0 0 5px #ffcc00; } 50% { box-shadow: 0 0 25px #ffcc00, 0 0 35px #fff; } 100% { box-shadow: 0 0 5px #ffcc00; } }
         
-        /* أنيميشن الموتور الشفاف */
+        /* أنيميشن لمعان الأزرار والنصوص */
+        @keyframes button-shine { 0% { box-shadow: 0 0 5px #ffcc00; } 50% { box-shadow: 0 0 20px #ffcc00; } 100% { box-shadow: 0 0 5px #ffcc00; } }
+
+        /* أنيميشن الموتور الشفاف - تم تعديل الشفافية لـ 50% */
         @keyframes bikeTransparentRun { 
             0% { right: -300px; opacity: 0; transform: scale(3); } 
-            20% { opacity: 0.3; } /* شفافية خفيفة عشان ما يغطي الكلام */
-            80% { opacity: 0.3; }
+            20% { opacity: 0.5; } 
+            80% { opacity: 0.5; }
             100% { right: 120%; opacity: 0; transform: scale(3); } 
         }
 
@@ -22,7 +25,7 @@
         .container { padding: 15px; max-width: 500px; margin: auto; }
         .card { background: #2d2d2d; margin: 15px 0; padding: 20px; border-radius: 20px; border: 1px solid #444; border-right: 6px solid #ffcc00; box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
         
-        /* الموتور الشفاف */
+        /* الموتور الشفاف بوضوح 50% */
         #transBike { 
             position: fixed; top: 40%; right: -300px; font-size: 120px; z-index: 9999; 
             pointer-events: none; opacity: 0; filter: grayscale(1); 
@@ -51,7 +54,13 @@
         .btn-whatsapp { background: #25D366; color: white; border-bottom: 4px solid #128C7E; }
         .btn-send-sub { background: white; color: black; border: 3px solid #ffcc00; font-size: 16px; font-weight: 900; }
         
+        /* جعل زر عرض الهيبة لامعاً */
+        .heiba-btn { animation: button-shine 2s infinite; }
+
         .result-box { font-size: 30px; color: #ffcc00; font-weight: bold; padding: 15px; border: 2px dashed #ffcc00; border-radius: 15px; margin-top: 10px; background: rgba(255,204,0,0.1); }
+        
+        /* حقوق النشر */
+        .footer-credits { font-size: 12px; color: #777; margin-top: 20px; padding-bottom: 20px; }
     </style>
 </head>
 <body onclick="runTransBike()" ontouchstart="runTransBike()">
@@ -133,8 +142,12 @@
             <h3 style="color: #ffcc00;">📍 مناطق الخدمة</h3>
             <p>إدلب . حلب . سرمدا . الدانا . وماحولها</p>
             <p>🕒 الدوام: من 5 مساءً وحتى 2 صباحاً</p>
-            <h2 style="animation: glow 2s infinite; color: #ffcc00;">انتظرو عرض الهيبة</h2>
+            <h2 style="animation: glow 1.5s infinite; color: #ffcc00;">انتظرو عرض الهيبة</h2>
             <p>نتمنى لكم الصحة والعافية ✨</p>
+        </div>
+        
+        <div class="footer-credits">
+            جميع الحقوق محفوظة © ألو موتور أبو يزن 2026
         </div>
     </div>
 
@@ -172,7 +185,7 @@
             navigator.geolocation.getCurrentPosition(p => {
                 const lat = p.coords.latitude;
                 const lon = p.coords.longitude;
-                window.open(`https://wa.me/963957352181?text=يا%20أبو%20يزن%20هذا%20موقعي%20الحالي:%20https://www.google.com/maps?q=${lat},${lon}`);
+                window.open(`http://googleusercontent.com/maps.google.com/maps?q=${lat},${lon}`);
             }, () => alert("يرجى تفعيل الـ GPS في هاتفك لإرسال الموقع"));
         }
 
@@ -182,7 +195,6 @@
             window.open(`https://wa.me/963957352181?text=اشتراك هيبة جديد:\n👤 الاسم: ${n}\n📱 الرقم: ${p}\n🔢 التوصيلة رقم: ${selectedMark}`);
         }
 
-        // دالة تشغيل الموتور الشفاف
         function runTransBike() {
             let b = document.getElementById('transBike');
             if(!b.classList.contains('active')) {
