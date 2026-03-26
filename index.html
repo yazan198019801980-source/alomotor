@@ -6,122 +6,37 @@
     <title>ألو موتور - أبو يزن</title>
     <style>
         @keyframes glow { 0% { text-shadow: 0 0 10px #ffcc00; } 50% { text-shadow: 0 0 20px #fff; } 100% { text-shadow: 0 0 10px #ffcc00; } }
-        @keyframes bikeRun { 0% { right: -300px; opacity: 0; transform: scale(3); } 20% { opacity: 0.6; } 80% { opacity: 0.6; } 100% { right: 120%; opacity: 0; transform: scale(3); } }
-        
-        body { font-family: 'Segoe UI', sans-serif; margin: 0; background-color: #1a1a1a; color: white; text-align: center; overflow-x: hidden; }
+        body { font-family: 'Segoe UI', sans-serif; margin: 0; background-color: #1a1a1a; color: white; text-align: center; }
         .header { background-color: #25D366; padding: 25px; border-bottom: 5px solid #ffcc00; position: relative; }
         .brand-name { font-size: 26px; font-weight: 900; animation: glow 2s infinite; color: #1a1a1a; }
         .container { padding: 15px; max-width: 500px; margin: auto; }
-        .card { background: #2d2d2d; margin: 15px 0; padding: 20px; border-radius: 20px; border: 1px solid #444; border-right: 6px solid #ffcc00; box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
-        
-        #transBike { position: fixed; top: 40%; right: -300px; font-size: 120px; z-index: 9999; pointer-events: none; opacity: 0; color: #ff0000; }
-        #transBike.active { animation: bikeRun 1.5s linear; }
-
-        input, select { width: 100%; padding: 12px; margin: 8px 0; border-radius: 10px; border: 2px solid #ffcc00; text-align: center; font-size: 18px; font-weight: bold; background: white; color: black; }
-        .btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 18px; border-radius: 15px; text-decoration: none; font-weight: bold; font-size: 18px; margin: 10px 0; cursor: pointer; border: none; }
-        .btn-location { background: linear-gradient(45deg, #ffcc00, #ff9900); color: #000; font-weight: 900; box-shadow: 0 4px #b89600; }
-        .circle { width: 50px; height: 50px; border-radius: 50%; border: 3px solid #ffcc00; line-height: 45px; cursor: pointer; font-weight: 900; display: inline-block; margin: 5px; color: #ffcc00; transition: 0.3s; }
-        .circle.active { background: #ffcc00; color: #000; transform: scale(1.1); }
-        .status-bar { padding: 10px; background: #444; border-radius: 10px; margin-bottom: 10px; font-weight: bold; border: 1px solid #ffcc00; }
-        .then-text { color: #ffcc00; font-weight: bold; display: block; margin: 10px 0; }
+        .card { background: #2d2d2d; margin: 15px 0; padding: 20px; border-radius: 20px; border-right: 6px solid #ffcc00; box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
+        input { width: 90%; padding: 12px; margin: 8px 0; border-radius: 10px; border: 2px solid #ffcc00; text-align: center; font-size: 18px; font-weight: bold; }
+        .btn { display: flex; align-items: center; justify-content: center; width: 100%; padding: 18px; border-radius: 15px; text-decoration: none; font-weight: bold; font-size: 18px; margin: 10px 0; border: none; cursor: pointer; }
+        .btn-location { background: linear-gradient(45deg, #ffcc00, #ff9900); color: #000; font-weight: 900; }
+        .circle { width: 50px; height: 50px; border-radius: 50%; border: 3px solid #ffcc00; line-height: 48px; cursor: pointer; font-weight: 900; display: inline-block; margin: 5px; color: #ffcc00; }
+        .circle.active { background: #ffcc00; color: #000; }
+        .then-text { color: #ffcc00; font-weight: bold; display: block; margin: 15px 0; font-size: 20px; }
+        .status-box { background: #444; padding: 10px; border-radius: 10px; border: 1px solid #ffcc00; margin-bottom: 10px; font-size: 18px; }
     </style>
 </head>
-<body onclick="runBike()">
-
-    <div id="transBike">🏍️</div>
+<body>
 
     <div class="header">
         <div class="brand-name">🏍️ أَلُو مٌوتُور أَبُو يَزَن 🏍️</div>
-        <button onclick="adminLogin()" style="position: absolute; bottom: 5px; left: 5px; background: none; border: none; color: #1a1a1a; font-size: 12px; cursor: pointer;">⚙️ الإدارة</button>
+        <button onclick="checkAdmin()" style="position: absolute; bottom: 5px; left: 5px; background: none; border: none; color: #1a1a1a; font-size: 10px;">⚙️ الإدارة</button>
     </div>
 
     <div class="container">
-        <div id="userStatus" class="status-bar">الحالة: متاح للعمل الآن ✅</div>
+        <div id="liveStatus" class="status-box">الحالة: متاح للعمل الآن ✅</div>
 
-        <div id="adminPanel" style="display: none; background: #333; padding: 15px; border-radius: 15px; margin-bottom: 20px; border: 2px dashed #ffcc00;">
-            <h4 style="color: #ffcc00;">⚙️ لوحة تحكم أبو يزن</h4>
-            <input type="text" id="statusInput" placeholder="اكتب حالتك (مثلاً: لا أعمل حالياً)">
-            <button onclick="updateStatus()" style="width:100%; background:#25D366; padding:10px; border-radius:10px; font-weight:bold; margin-bottom:5px;">تحديث الحالة</button>
-            <button onclick="setStatus('في عطلة 🏖️')" style="width:48%; background:#e74c3c; padding:10px; border-radius:10px; font-weight:bold;">تفعيل عطلة</button>
-            <button onclick="setStatus('متاح للعمل الآن ✅')" style="width:48%; background:#2ecc71; padding:10px; border-radius:10px; font-weight:bold;">تفعيل متاح</button>
-        </div>
-
-        <div class="card">
-            <h3 style="color: #ffcc00;">📍 أرسل موقعك عبر الواتساب</h3>
-            <button onclick="sendLocationToWhatsApp()" class="btn btn-location">إرسال موقعي إلى أبو يزن (WhatsApp)</button>
-        </div>
-
-        <div class="card">
-            <h3 style="color: #ffcc00;">💰 حاسبة السعر</h3>
-            <input type="number" id="km" placeholder="كم المسافة؟" oninput="calc()">
-            <div id="price" style="font-size: 24px; color: #ffcc00;">السعر: 0 ل.ت</div>
-        </div>
-
-        <div class="card">
-            <button onclick="document.getElementById('heiba').style.display='block'" class="btn" style="background: linear-gradient(45deg, #ffcc00, #b89600); color: #000;">🎁 عرض الهيبة</button>
-            <div id="heiba" style="display:none; padding-top:20px;">
-                <span class="then-text">ثم</span>
-                <input type="text" id="cName" placeholder="الاسم المسجل">
-                <span class="then-text">ثم</span>
-                <input type="text" id="cPhone" placeholder="رقم الهاتف">
-                <span class="then-text">ثم اختر رقم التوصيلة</span>
-                <div id="circles">
-                    <div class="circle" onclick="mark(1)">1</div>
-                    <div class="circle" onclick="mark(2)">2</div>
-                    <div class="circle" onclick="mark(3)">3</div>
-                    <div class="circle" onclick="mark(4)">4</div>
-                    <div class="circle" onclick="mark(5)">5</div>
-                    <div class="circle" onclick="mark(6)">6</div>
-                </div>
-                <span class="then-text">ثم</span>
-                <button onclick="sendHeiba()" class="btn" style="background:white; color:black;">إرسال عبر الواتساب</button>
-            </div>
-        </div>
-
-        <div class="card">
-            <a href="tel:+963957352181" class="btn" style="background:#007bff; color:white;">📞 اتصال مباشر</a>
-            <a href="sms:+963957352181" class="btn" style="background:#f39c12; color:white;">✉️ رسالة SMS</a>
-        </div>
-    </div>
-
-    <script>
-        let selectedMark = 0;
-        let myNum = "963957352181";
-
-        function adminLogin() { if(prompt("شفرة الإدارة:") === "123") document.getElementById('adminPanel').style.display='block'; }
-        function setStatus(s) { document.getElementById('userStatus').innerText = "الحالة: " + s; }
-        function updateStatus() { setStatus(document.getElementById('statusInput').value); }
-
-        function mark(n) {
-            selectedMark = n;
-            document.querySelectorAll('.circle').forEach((c, i) => i < n ? c.classList.add('active') : c.classList.remove('active'));
-            if(n === 6) { 
-                alert("🎉 مبروك لك توصيلة مجانية! 🎉");
-                document.body.style.background = "#440000";
-                setTimeout(() => document.body.style.background = "#1a1a1a", 2000);
-            }
-        }
-
-        function sendLocationToWhatsApp() {
-            navigator.geolocation.getCurrentPosition(p => {
-                let url = `https://maps.google.com/?q=${p.coords.latitude},${p.coords.longitude}`;
-                window.open(`https://wa.me/${myNum}?text=أبو يزن، هذا موقعي لطلب الموتور:%0A${url}`);
-            }, () => alert("فعل الموقع GPS"));
-        }
-
-        function sendHeiba() {
-            let n = document.getElementById('cName').value, p = document.getElementById('cPhone').value;
-            if(!n || !p || !selectedMark) return alert("عبي البيانات!");
-            let msg = `اشتراك هيبة:%0Aالاسم: ${n}%0Aالرقم: ${p}%0Aرقم التوصيلة: ${selectedMark}`;
-            if(selectedMark === 6) msg += "%0A(مبروك التوصيلة المجانية 🎁)";
-            window.open(`https://wa.me/${myNum}?text=${msg}`);
-        }
-
-        function calc() { document.getElementById('price').innerText = "السعر: " + (document.getElementById('km').value * 15) + " ل.ت"; }
-        function runBike() {
-            let b = document.getElementById('transBike');
-            if(!b.classList.contains('active')) { b.classList.add('active'); setTimeout(() => b.classList.remove('active'), 1500); }
-        }
-    </script>
-</body>
-</html>
+        <div id="adminPanel" style="display: none; background: #333; padding: 15px; border-radius: 15px; border: 2px dashed #ffcc00; margin-bottom: 20px;">
+            <h3 style="color:#ffcc00">إدارة النظام</h3>
+            <input type="text" id="manualNotWorking" placeholder="خانة: أنا الآن لا أعمل">
+            <button onclick="setStatus(document.getElementById('manualNotWorking').value)" style="width:100%; background:#e74c3c; color:white; padding:10px; margin-bottom:10px; border-radius:10px;">تفعيل أنا لا أعمل</button>
+            
+            <input type="text" id="manualWorking" placeholder="خانة: الآن متاح للعمل">
+            <button onclick="setStatus(document.getElementById('manualWorking').value)" style="width:100%; background:#2ecc71; color:white; padding:10px; margin-bottom:10px; border-radius:10px;">تفعيل متاح للعمل</button>
+            
+            <button onclick="setStatus('أنا في عطلة حالياً 🏖️')" style="width:100%; background:#f39c12; color:white; padding:10px; margin-bottom:10px; border-radius:10px;">تفعيل العطلة</button>
+            <button onclick="setStatus('متاح الآن للخدم
