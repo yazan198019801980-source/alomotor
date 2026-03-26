@@ -1,120 +1,178 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="tr" dir="ltr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ألو موتور - أبو يزن</title>
+    <title>ALU MOTOR EBU YEZEN</title>
     <style>
-        /* أنيميشن التوهج الأصلي */
-        @keyframes glow { 0% { text-shadow: 0 0 10px #ffcc00; } 50% { text-shadow: 0 0 20px #fff; } 100% { text-shadow: 0 0 10px #ffcc00; } }
+        /* أنيميشن اللمعان الهيبة (الأصلي) */
+        @keyframes shine {
+            0% { text-shadow: 0 0 10px #ffcc00, 0 0 20px #ffcc00; color: #fff; }
+            50% { text-shadow: 0 0 30px #ffffff, 0 0 40px #ffcc00; color: #ffcc00; }
+            100% { text-shadow: 0 0 10px #ffcc00, 0 0 20px #ffcc00; color: #fff; }
+        }
         
-        /* أنيميشن الموتور الكبير (يمرق من اليمين لليسار) */
-        @keyframes bikePass { 
-            0% { right: -300px; opacity: 0; transform: scale(2.5); } 
-            20% { opacity: 1; }
-            80% { opacity: 1; }
-            100% { right: 120%; opacity: 0; transform: scale(2.5); } 
+        /* أنيميشن توهج الدوائر عند الاختيار */
+        @keyframes circleGlow {
+            from { box-shadow: 0 0 5px #ffcc00; }
+            to { box-shadow: 0 0 20px #ffffff, 0 0 10px #ffcc00; }
         }
 
-        body { font-family: 'Segoe UI', sans-serif; margin: 0; background-color: #1a1a1a; color: white; text-align: center; overflow-x: hidden; }
-        .header { background-color: #25D366; padding: 25px; border-bottom: 5px solid #ffcc00; position: relative; }
-        .brand-name { font-size: 26px; font-weight: 900; animation: glow 2s infinite; color: #1a1a1a; }
-        .container { padding: 15px; max-width: 500px; margin: auto; }
-        .card { background: #2d2d2d; margin: 15px 0; padding: 20px; border-radius: 20px; border-right: 6px solid #ffcc00; box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
-        
-        /* لوحة الإدارة */
-        #adminPanel { display: none; background: #333; border: 2px dashed #ffcc00; padding: 15px; border-radius: 15px; margin-bottom: 20px; text-align: right; }
-        .status-card { display: none; margin-bottom: 15px; padding: 15px; border-radius: 15px; border: 2px solid white; }
-
-        input { width: 100%; padding: 12px; margin: 8px 0; border-radius: 10px; border: 2px solid #ffcc00; text-align: center; font-size: 18px; font-weight: bold; box-sizing: border-box; background: white; color: black; }
-        
-        .circle-group { display: flex; justify-content: center; gap: 10px; margin: 20px 0; }
-        .circle { width: 40px; height: 40px; border-radius: 50%; border: 2px solid #ffcc00; line-height: 40px; cursor: pointer; font-weight: bold; color: #ffcc00; }
-        .circle.active { background: #ffcc00; color: #000; box-shadow: 0 0 15px #ffcc00; }
-
-        .btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 18px; border-radius: 15px; text-decoration: none; font-weight: bold; font-size: 18px; margin: 10px 0; border: none; cursor: pointer; color: white; }
-        .btn-wa { background: #25D366; }
-        .btn-call { background: #007bff; }
-        .btn-sms { background: #f39c12; }
-        
-        /* الموتور الكبير المتحرك */
-        #giantBike { 
-            position: fixed; top: 45%; right: -300px; font-size: 100px; z-index: 9999; 
-            pointer-events: none; opacity: 0; filter: drop-shadow(0 0 10px #ffcc00); 
+        /* أنيميشن حركة الموتور العملاق من اليمين لليسار */
+        @keyframes bikeRunAcross { 
+            0% { right: -300px; opacity: 0; transform: scale(3) rotate(0deg); } /* بداية من اليمين مخفي وكبير جداً */
+            10% { opacity: 1; } /* يظهر بسرعة */
+            90% { opacity: 1; } /* يبقى ظاهراً */
+            100% { right: 120%; opacity: 0; transform: scale(3) rotate(-5deg); } /* يختفي لليسار مع ميلان بسيط */
         }
-        #giantBike.run { animation: bikePass 1.2s linear; }
 
-        .service-areas { font-size: 20px; font-weight: 900; color: #ffcc00; animation: glow 1.5s infinite; }
+        body { font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; background-color: #121212; color: white; text-align: center; overflow-x: hidden; /* لمنع ظهور شريط التمرير الأفقي بسبب الموتور */ }
+        .header { background-color: #25D366; padding: 25px; border-bottom: 4px solid #ffcc00; position: relative; z-index: 10; }
+        .brand-name { font-size: 26px; font-weight: 900; animation: shine 1.5s infinite; text-transform: uppercase; line-height: 1.6; }
+        .container { padding: 15px; max-width: 450px; margin: auto; position: relative; z-index: 5; }
+        .card { background: #1e1e1e; margin: 15px 0; padding: 20px; border-radius: 15px; border-left: 5px solid #ffcc00; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
+        
+        h3 { color: #ffcc00; margin-bottom: 10px; }
+        input { width: 100%; padding: 12px; margin: 10px 0; border-radius: 8px; border: 1px solid #ffcc00; background: #fff; color: #000; font-weight: bold; box-sizing: border-box; }
+        
+        /* الأرقام من 1 لـ 6 */
+        .circle-group { display: flex; justify-content: center; gap: 8px; margin: 15px 0; }
+        .circle { width: 40px; height: 40px; border-radius: 50%; border: 2px solid #ffcc00; line-height: 40px; cursor: pointer; font-weight: bold; color: #ffcc00; transition: 0.3s; background: transparent; }
+        .circle.active { background: #ffcc00; color: #000; animation: circleGlow 0.5s infinite alternate; }
+
+        .btn { display: block; width: 100%; padding: 15px; border-radius: 10px; text-decoration: none; font-weight: bold; margin: 10px 0; border: none; cursor: pointer; color: white; box-sizing: border-box; font-size: 16px; }
+        .btn-wa { background: #25D366; border-bottom: 4px solid #128C7E; }
+        .btn-loc { background: #ea4335; border-bottom: 4px solid #a52714; } /* لون الخرائط */
+        .btn-send { background: #ffcc00; color: #000; font-size: 18px; font-weight: 900; border-bottom: 4px solid #b89600; }
+        
+        .congrats { display: none; color: #00ff00; font-weight: bold; margin-top: 10px; animation: shine 1s infinite; font-size: 18px; }
+        .step-label { color: #aaa; font-size: 14px; margin: 10px 0 5px 0; display: block; font-weight: bold; }
+
+        /* --- الموتور العملاق المتحرك --- */
+        #giantBike {
+            position: fixed;
+            top: 45%; /* موقع عمودي مناسب يقطع منتصف الشاشة */
+            right: -300px; /* بداية خارج الشاشة تماماً من اليمين */
+            font-size: 120px; /* حجم عملاق جداً وطاغي */
+            z-index: 9999; /* فوق كل شيء على الإطلاق لضمان الظهور */
+            pointer-events: none; /* لا يمنع التفاعل مع العناصر تحته */
+            opacity: 0;
+            filter: drop-shadow(0 0 20px #ffcc00); /* توهج ذهبي قوي للموتور */
+        }
+        /* الكلاس الذي سيتم إضافته بالـ JavaScript لتفعيل الحركة */
+        #giantBike.active {
+            animation: bikeRunAcross 1s ease-in-out; /* حركة سريعة جداً وقوية */
+        }
     </style>
 </head>
-<body onclick="startBike()" ontouchstart="startBike()">
+<body onclick="startGiantBikeAnimation()" ontouchstart="startGiantBikeAnimation()">
 
     <div id="giantBike">🏍️</div>
 
     <div class="header">
-        <div class="brand-name">🏍️ أَلُو مٌوتُور أَبُو يَزَن 🏍️</div>
-        <button onclick="checkAdmin()" style="position: absolute; bottom: 5px; left: 5px; background: none; border: none; color: #1a1a1a; font-size: 11px; font-weight: bold; cursor: pointer;">⚙️ إدارة النظام</button>
+        <div class="brand-name">🏍️ ALU MOTOR EBU YEZEN 🏍️</div>
     </div>
 
     <div class="container">
-        <div id="statusCard" class="status-card"><p id="statusMsg"></p></div>
-
-        <div id="adminPanel">
-            <h4 style="color: #ffcc00; text-align:center;">⚙️ إعدادات الإدارة</h4>
-            <input type="text" id="statusInput" placeholder="📝 سبب العطلة">
-            <button onclick="setStatus('available')" style="width:100%; padding:10px; background:#25D366; font-weight:bold; margin-bottom:5px;">✅ متاح</button>
-            <button onclick="setStatus('holiday')" style="width:100%; padding:10px; background:#931a1a; color:white; font-weight:bold;">🚫 عطلة</button>
-        </div>
-
-        <div class="card">
-            <h3 style="color: #ffcc00;">💰 حاسبة سعر التوصيل</h3>
-            <input type="number" id="dist" placeholder="📏 المسافة بالكم" oninput="document.getElementById('res').innerText = 'السعر: ' + (this.value * 15) + ' ل.ت'">
-            <div id="res" style="font-size:30px; color:#ffcc00; font-weight:bold; margin-top:10px;">السعر: 0 ل.ت</div>
-        </div>
-
-        <div class="card">
-            <button onclick="document.getElementById('heiba').style.display='block'" style="background:#ffcc00; color:black; padding:15px; width:100%; border:none; border-radius:10px; font-weight:900; font-size:18px;">🎁 عرض الهيبة.. اضغط هنا</button>
-            <div id="heiba" style="display:none; padding-top:20px;">
-                <input type="text" id="uName" placeholder="👤 الاسم">
-                <input type="text" id="uPhone" placeholder="📱 الرقم">
-                <div class="circle-group">
-                    <script>for(let i=1; i<=6; i++) document.write(`<div class="circle" onclick="setMark(${i})">${i}</div>`);</script>
-                </div>
-                <button onclick="sendHeiba()" style="width:100%; padding:12px; background:white; color:black; font-weight:bold; border:2px solid #ffcc00; border-radius:10px;">إرسال اشتراك الهيبة</button>
-            </div>
-        </div>
-
-        <div class="card">
-            <a href="https://wa.me/963957352181" class="btn btn-wa">🏍️ واتساب ألو موتور</a>
-            <a href="tel:+963957352181" class="btn btn-call">📞 اتصال مباشر</a>
-            <a href="sms:+963957352181" class="btn btn-sms">✉️ رسالة SMS</a>
-        </div>
-
-        <div class="card">
-            <h3 style="color: #ffcc00;">📍 مناطق الخدمة</h3>
-            <div class="service-areas">إدلب . حلب . سرمدا . الدانا وماحولها</div>
-            <p>🕒 من 5 مساءً وحتى 2 صباحاً</p>
-            <p>نتمنى لكم الصحة والعافية ❤️</p>
-        </div>
         
-        <p style="font-size: 12px; color: #777;">جميع الحقوق محفوظة لألو موتور - أبو يزن © 2026</p>
+        <div class="card">
+            <h3>🎁 HEYBE TEKLİFİ</h3>
+            
+            <span class="step-label">1. Buraya Tıklayın (اضغط هنا للبيانات)</span>
+            <input type="text" id="name" placeholder="Adınız (الاسم المسجل)">
+            <input type="text" id="phone" placeholder="Telefon numaranız (الرقم)">
+            
+            <span class="step-label">2. Sonra Tıklayın (ثم اضغط على رقم)</span>
+            <div class="circle-group">
+                <div class="circle" onclick="selectMark(1)">1</div>
+                <div class="circle" onclick="selectMark(2)">2</div>
+                <div class="circle" onclick="selectMark(3)">3</div>
+                <div class="circle" onclick="selectMark(4)">4</div>
+                <div class="circle" onclick="selectMark(5)">5</div>
+                <div class="circle" onclick="selectMark(6)">6</div>
+            </div>
+            <div id="winMsg" class="congrats">🎉 Tebrikler! Ücretsiz Teslimat Kazandınız! (ربحت توصيلة مجانية)</div>
+            
+            <span class="step-label">3. Sonra Gönderين (ثم أرسل الاشتراك)</span>
+            <button class="btn btn-send" onclick="sendToEbuYezen()">Aboneliği Ebu Yezen'e Gönder</button>
+        </div>
+
+        <div class="card">
+            <h3>📍 İLETİŞİM & KONUM</h3>
+            <a href="https://wa.me/963957352181" class="btn btn-wa">WhatsApp İletişim</a>
+            <button class="btn btn-loc" onclick="sendLocation()">📍 Konumu Gönder (إرسال الموقع)</button>
+        </div>
+
+        <div class="card">
+            <h3 style="font-size: 18px;">📍 HİZMET BÖLGELERİ</h3>
+            <p>İdlib - Halep - Sarmada - Dana و حولها</p>
+            <p style="color: #ffcc00; font-weight: bold; animation: shine 2s infinite;">Size sağlık و عافية dileriz ❤️</p>
+        </div>
+
+        <p style="font-size: 12px; color: #555; margin-bottom: 20px;">Tüm hakları saklıdır © 2026</p>
     </div>
 
     <script>
-        let markVal = 0;
-        function setMark(n) { markVal = n; document.querySelectorAll('.circle').forEach((c, i) => i < n ? c.classList.add('active') : c.classList.remove('active')); }
-        function checkAdmin() { if(prompt("أدخل الشفرة:") === "1234") document.getElementById('adminPanel').style.display='block'; }
-        function setStatus(t) { localStorage.setItem("w_status", JSON.stringify({ display: 'block', text: t === 'available' ? '✅ متاح حالياً' : '🚫 عطلة: ' + document.getElementById('statusInput').value, bg: t === 'available' ? '#1b5e20' : '#931a1a' })); location.reload(); }
-        window.onload = function() { let s = JSON.parse(localStorage.getItem("w_status")); if(s) { Object.assign(document.getElementById('statusCard').style, {display: s.display, backgroundColor: s.bg}); document.getElementById('statusMsg').innerText = s.text; } }
-        function sendHeiba() { let n = document.getElementById('uName').value, p = document.getElementById('uPhone').value; if(!n || !p || !markVal) return alert("كمل البيانات"); window.open(`https://wa.me/963957352181?text=` + encodeURIComponent(`اشتراك هيبة:\nالاسم: ${n}\nالرقم: ${p}\nالتوصيلة: ${markVal}`)); }
-        
-        // دالة تشغيل الموتور
-        function startBike() {
-            let b = document.getElementById('giantBike');
-            if(!b.classList.contains('run')) {
-                b.classList.add('run');
-                setTimeout(() => b.classList.remove('run'), 1200);
+        let selected = 0;
+
+        function selectMark(n) {
+            selected = n;
+            document.querySelectorAll('.circle').forEach((c, i) => {
+                if (i < n) c.classList.add('active');
+                else c.classList.remove('active');
+            });
+            
+            // إذا اختار رقم 6 تظهر مفاجأة التوصيلة المجانية
+            if(n === 6) {
+                document.getElementById('winMsg').style.display = 'block';
+            } else {
+                document.getElementById('winMsg').style.display = 'none';
             }
+        }
+
+        function sendToEbuYezen() {
+            const n = document.getElementById('name').value;
+            const p = document.getElementById('phone').value;
+            if(!n || !p || selected === 0) return alert("Lütfen tüm bilgileri doldurun! (عبي البيانات كاملة)");
+            
+            let msg = `Yeni Heybe Aboneliği:\nİsim: ${n}\nNumara: ${p}\nSeçilen: ${selected}`;
+            if(selected === 6) msg += "\n🎁 HEDİYE: Ücretsiz Teslimat!";
+            
+            window.open(`https://wa.me/963957352181?text=${encodeURIComponent(msg)}`, '_blank');
+        }
+
+        function sendLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    const lat = position.coords.latitude;
+                    const lon = position.coords.longitude;
+                    // الرابط المباشر الصحيح لخرائط جوجل
+                    const locUrl = `http://googleusercontent.com/maps.google.com/9{lat},${lon}`;
+                    window.open(`https://wa.me/963957352181?text=${encodeURIComponent("Konumum (موقعي): " + locUrl)}`, '_blank');
+                }, function() {
+                    alert("Konum alınamadı. Lütfen GPS izin verin.");
+                });
+            } else {
+                alert("Tarayıcınız konumu desteklemiyor.");
+            }
+        }
+
+        // --- دالة تحريك الموتور العملاق من اليمين لليسار ---
+        let giantBikeTimeout;
+        function startGiantBikeAnimation() {
+            const bike = document.getElementById('giantBike');
+            
+            // منع تكرار الأنيميشن إذا كان يعمل بالفعل
+            if (bike.classList.contains('active')) return;
+
+            // إضافة الكلاس لتفعيل الحركة والظهور
+            bike.classList.add('active');
+            
+            // إزالة الكلاس بعد انتهاء الأنيميشن (1 ثانية)
+            clearTimeout(giantBikeTimeout);
+            giantBikeTimeout = setTimeout(() => {
+                bike.classList.remove('active');
+            }, 1000); // 1000 ميلي ثانية = 1 ثانية (نفس مدة الـ CSS)
         }
     </script>
 </body>
