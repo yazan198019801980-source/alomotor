@@ -14,23 +14,19 @@
         .container { padding: 15px; max-width: 500px; margin: auto; }
         .card { background: #2d2d2d; margin: 15px 0; padding: 20px; border-radius: 20px; border: 1px solid #444; border-right: 6px solid #ffcc00; box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
         
-        /* لوحة الإدارة */
         #adminPanel { display: none; background: #333; border: 2px dashed #ffcc00; padding: 15px; border-radius: 15px; margin-bottom: 20px; text-align: right; }
         .status-card { display: none; margin-bottom: 15px; padding: 15px; border-radius: 15px; border: 2px solid white; }
 
-        /* حقول الإدخال */
         input { width: 100%; padding: 12px; margin: 8px 0; border-radius: 10px; border: 2px solid #ffcc00; text-align: center; font-size: 18px; font-weight: bold; box-sizing: border-box; background: white; color: black; }
         .hint-text { color: #ffcc00; font-size: 15px; font-weight: bold; display: block; margin-top: 5px; }
         .then-text { color: #fff; font-size: 20px; font-weight: 900; margin: 10px 0; display: block; text-decoration: underline #ffcc00; }
 
-        /* دوائر الهيبة اللامعة والكبيرة */
         .circle-group { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin: 20px 0; }
         .circle-wrapper { display: flex; flex-direction: column; align-items: center; }
         .press-here { font-size: 11px; color: #ffcc00; margin-bottom: 5px; font-weight: bold; }
-        .circle { width: 60px; height: 60px; border-radius: 50%; border: 4px solid #ffcc00; line-height: 52px; cursor: pointer; font-weight: 900; font-size: 26px; color: #ffcc00; transition: 0.3s; background: transparent; }
+        .circle { width: 60px; height: 60px; border-radius: 50%; border: 4px solid #ffcc00; line-height: 52px; cursor: pointer; font-weight: 900; font-size: 24px; color: #ffcc00; transition: 0.3s; background: transparent; }
         .circle.active { background: #ffcc00; color: #000; transform: scale(1.2); animation: ring-glow 1s infinite; border-color: #fff; }
 
-        /* الأزرار */
         .btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 18px; border-radius: 15px; text-decoration: none; font-weight: bold; font-size: 18px; margin: 10px 0; border: none; cursor: pointer; }
         .btn-location { background: linear-gradient(45deg, #ffcc00, #ff9900); color: #000; border-bottom: 5px solid #b89600; font-size: 16px; font-weight: 900; }
         .btn-whatsapp { background: #25D366; color: white; border-bottom: 4px solid #128C7E; }
@@ -53,15 +49,10 @@
 
         <div id="adminPanel">
             <h4 style="color: #ffcc00; text-align:center;">⚙️ إعدادات الإدارة</h4>
-            <label>📝 سبب العطلة (اختياري):</label>
-            <input type="text" id="statusInput" placeholder="اكتب السبب هنا">
-            <button onclick="setStatus('available')" style="width:100%; padding:12px; background:#25D366; font-weight:bold; margin-bottom:10px; border-radius:10px;">✅ أنا في العمل (متاح)</button>
-            <button onclick="setStatus('holiday')" style="width:100%; padding:12px; background:#931a1a; color:white; font-weight:bold; margin-bottom:10px; border-radius:10px;">🚫 تفعيل العطلة</button>
-            <button onclick="localStorage.removeItem('work_status'); location.reload();" style="width:100%; padding:10px; background:#555; color:white; border-radius:10px;">إخفاء الحالة للزبائن</button>
-            <hr style="border:0.5px solid #444;">
-            <label>🔑 تغيير شفرة الدخول:</label>
-            <input type="password" id="newPass" placeholder="الشفرة الجديدة">
-            <button onclick="localStorage.setItem('admin_pass', document.getElementById('newPass').value); alert('تم تغيير الشفرة بنجاح');" style="width:100%; padding:10px; background:#ffcc00; border-radius:10px;">حفظ الشفرة الجديدة</button>
+            <input type="text" id="statusInput" placeholder="اكتب سبب العطلة">
+            <button onclick="setStatus('available')" style="width:100%; padding:12px; background:#25D366; font-weight:bold; margin-bottom:10px;">✅ أنا في العمل (متاح)</button>
+            <button onclick="setStatus('holiday')" style="width:100%; padding:12px; background:#931a1a; color:white; font-weight:bold; margin-bottom:10px;">🚫 تفعيل العطلة</button>
+            <button onclick="localStorage.removeItem('work_status'); location.reload();" style="width:100%; padding:10px; background:#555; color:white;">إخفاء الحالة</button>
         </div>
 
         <div class="card">
@@ -75,35 +66,24 @@
             <input type="text" placeholder="🏁 إلى: (الجهة)">
             <input type="number" id="kmIn" placeholder="📏 أدخل المسافة (كم)" oninput="document.getElementById('res').innerText = 'السعر: ' + (this.value * 15) + ' ل.ت'">
             <div id="res" class="result-box">السعر: 0 ل.ت</div>
-            <p style="font-size: 12px; color:#aaa;">(السعر المعتمد: 15 ليرة تركية لكل 1 كم)</p>
         </div>
 
         <div class="card">
-            <button onclick="document.getElementById('heiba').style.display='block'" class="heiba-btn" style="background: linear-gradient(45deg, #ffcc00, #b89600); color: #000; padding: 15px; border-radius: 10px; cursor: pointer; font-weight: 900; width: 100%; border: none; font-size: 18px;">🎁 عرض الهيبة.. اضغط هنا</button>
+            <button onclick="document.getElementById('heiba').style.display='block'" class="btn" style="background: linear-gradient(45deg, #ffcc00, #b89600); color: #000;">🎁 عرض الهيبة.. اضغط هنا</button>
             <div id="heiba" style="display:none; padding-top:20px;">
-                <h3 style="color: #ffcc00;">كل 6 توصيلات والسابعة مجاناً</h3>
-                
                 <span class="hint-text">( ادخل اسمك هنا )</span>
-                <input type="text" id="cName" placeholder="الاسم المسجل عندنا">
+                <input type="text" id="cName" placeholder="الاسم المسجل">
                 <span class="then-text">( ثم )</span>
-                
                 <span class="hint-text">( ادخل رقم الهاتف هنا )</span>
-                <input type="text" id="cPhone" placeholder="رقم هاتفك">
+                <input type="text" id="cPhone" placeholder="رقم الهاتف">
                 <span class="then-text">( ثم )</span>
-                
                 <div class="circle-group">
                     <script>
                         for(let i=1; i<=6; i++){
-                            document.write(`
-                                <div class="circle-wrapper">
-                                    <span class="press-here">اضغط هنا</span>
-                                    <div class="circle" onclick="mark(${i})">${i}</div>
-                                </div>
-                            `);
+                            document.write(`<div class="circle-wrapper"><span class="press-here">اضغط هنا</span><div class="circle" onclick="mark(${i})">${i}</div></div>`);
                         }
                     </script>
                 </div>
-                <div id="congrats" style="color: #25D366; font-weight: bold; margin: 10px 0;"></div>
                 <button onclick="sendHeiba()" class="btn btn-send-sub">اضغط هنا لكي ترسل الاشتراك إلى ألو موتور أبو يزن</button>
             </div>
         </div>
@@ -111,58 +91,55 @@
         <div class="card">
             <a href="https://wa.me/963957352181" class="btn btn-whatsapp">🏍️ واتساب ألو موتور</a>
             <a href="tel:+963957352181" class="btn" style="background:#007bff; color:white;">📞 اتصال مباشر</a>
-            <a href="sms:+963957352181" class="btn" style="background:#f39c12; color:white;">✉️ رسالة نصية SMS</a>
             <hr style="border:0.5px solid #444;">
-            <h3 style="color: #ffcc00;">📍 مناطق الخدمة</h3>
-            <p>إدلب . حلب . سرمدا . الدانا . وماحولها</p>
-            <p>🕒 الدوام: من 5 مساءً وحتى 2 صباحاً</p>
+            <p>📍 إدلب . سرمدا . الدانا</p>
+            <p>🕒 من 5 مساءً وحتى 2 صباحاً</p>
             <h2 style="animation: glow 2s infinite; color: #ffcc00;">انتظرو عرض الهيبة</h2>
-            <p>نتمنى لكم الصحة والعافية ✨</p>
         </div>
     </div>
 
     <script>
         let selectedMark = 0;
         function getPass() { return localStorage.getItem("admin_pass") || "1234"; }
-        function checkPass() { if(prompt("أدخل شفرة الإدارة:") === getPass()) document.getElementById('adminPanel').style.display='block'; else alert("الشفرة غلط!"); }
+        function checkPass() { if(prompt("شفرة الإدارة:") === getPass()) document.getElementById('adminPanel').style.display='block'; }
         
         function mark(n) {
             selectedMark = n;
             document.querySelectorAll('.circle').forEach((c, i) => i < n ? c.classList.add('active') : c.classList.remove('active'));
-            document.getElementById('congrats').innerText = n >= 6 ? "توصيلتك الجاية مجانية مبروك! 🎉" : "";
         }
 
         function setStatus(t) {
-            let reason = document.getElementById('statusInput').value;
-            let s = { 
-                display: 'block', 
-                text: t === 'available' ? '✅ ألو موتور أبو يزن متاح.. نحن في خدمتكم الآن' : '🚫 اليوم عطلة' + (reason ? ' بسبب: ' + reason : ''), 
-                bg: t === 'available' ? '#1b5e20' : '#931a1a' 
-            };
+            let s = { display: 'block', text: t === 'available' ? '✅ ألو موتور متاح حالياً' : '🚫 عطلة: ' + document.getElementById('statusInput').value, bg: t === 'available' ? '#1b5e20' : '#931a1a' };
             localStorage.setItem("work_status", JSON.stringify(s));
             location.reload();
         }
 
         window.onload = function() {
             let s = JSON.parse(localStorage.getItem("work_status"));
-            if(s) { 
-                Object.assign(document.getElementById('statusCard').style, {display: s.display, backgroundColor: s.bg, borderColor: 'white'}); 
-                document.getElementById('statusMsg').innerText = s.text; 
-            }
+            if(s) { Object.assign(document.getElementById('statusCard').style, {display: s.display, backgroundColor: s.bg}); document.getElementById('statusMsg').innerText = s.text; }
         }
 
+        // إصلاح رابط الموقع ليعمل 100%
         function sendLocation() {
-            navigator.geolocation.getCurrentPosition(p => {
-                const lat = p.coords.latitude;
-                const lon = p.coords.longitude;
-                window.open(`https://wa.me/963957352181?text=يا%20أبو%20يزن%20هذا%20موقعي%20الحالي:%20https://www.google.com/maps?q=${lat},${lon}`);
-            }, () => alert("يرجى تفعيل الـ GPS في هاتفك لإرسال الموقع"));
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    const lat = position.coords.latitude;
+                    const lon = position.coords.longitude;
+                    const mapLink = "https://www.google.com/maps?q=" + lat + "," + lon;
+                    const message = encodeURIComponent("يا أبو يزن هذا موقعي للطلب: " + mapLink);
+                    window.open("https://wa.me/963957352181?text=" + message, '_blank');
+                }, function() {
+                    alert("يرجى تفعيل الـ GPS في هاتفك أولاً");
+                });
+            } else {
+                alert("متصفحك لا يدعم خاصية تحديد الموقع");
+            }
         }
 
         function sendHeiba() {
             let n = document.getElementById('cName').value, p = document.getElementById('cPhone').value;
-            if(!n || !p || !selectedMark) return alert("يا غالي عبي البيانات والاسم ورقم التوصيلة أولاً");
-            window.open(`https://wa.me/963957352181?text=اشتراك هيبة جديد:\n👤 الاسم: ${n}\n📱 الرقم: ${p}\n🔢 التوصيلة رقم: ${selectedMark}`);
+            if(!n || !p || !selectedMark) return alert("عبي البيانات كاملة");
+            window.open(`https://wa.me/963957352181?text=اشتراك هيبة:\nالاسم: ${n}\nالرقم: ${p}\nالتوصيلة: ${selectedMark}`);
         }
     </script>
 </body>
