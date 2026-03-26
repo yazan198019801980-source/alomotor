@@ -97,4 +97,25 @@
             <p>نتمنى لكم الصحة والعافية ❤️</p>
         </div>
         
-        <p style="font-size: 12px; color: #777;">جميع الحقوق محفوظة لألو موتور - أبو يزن © 2026
+        <p style="font-size: 12px; color: #777;">جميع الحقوق محفوظة لألو موتور - أبو يزن © 2026</p>
+    </div>
+
+    <script>
+        let markVal = 0;
+        function setMark(n) { markVal = n; document.querySelectorAll('.circle').forEach((c, i) => i < n ? c.classList.add('active') : c.classList.remove('active')); }
+        function checkAdmin() { if(prompt("أدخل الشفرة:") === "1234") document.getElementById('adminPanel').style.display='block'; }
+        function setStatus(t) { localStorage.setItem("w_status", JSON.stringify({ display: 'block', text: t === 'available' ? '✅ متاح حالياً' : '🚫 عطلة: ' + document.getElementById('statusInput').value, bg: t === 'available' ? '#1b5e20' : '#931a1a' })); location.reload(); }
+        window.onload = function() { let s = JSON.parse(localStorage.getItem("w_status")); if(s) { Object.assign(document.getElementById('statusCard').style, {display: s.display, backgroundColor: s.bg}); document.getElementById('statusMsg').innerText = s.text; } }
+        function sendHeiba() { let n = document.getElementById('uName').value, p = document.getElementById('uPhone').value; if(!n || !p || !markVal) return alert("كمل البيانات"); window.open(`https://wa.me/963957352181?text=` + encodeURIComponent(`اشتراك هيبة:\nالاسم: ${n}\nالرقم: ${p}\nالتوصيلة: ${markVal}`)); }
+        
+        // دالة تشغيل الموتور
+        function startBike() {
+            let b = document.getElementById('giantBike');
+            if(!b.classList.contains('run')) {
+                b.classList.add('run');
+                setTimeout(() => b.classList.remove('run'), 1200);
+            }
+        }
+    </script>
+</body>
+</html>
