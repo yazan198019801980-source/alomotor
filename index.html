@@ -5,102 +5,49 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ألو موتور - أبو يزن</title>
     <style>
-        /* أنيميشن التوهج */
         @keyframes glow { 0% { text-shadow: 0 0 10px #ffcc00; } 50% { text-shadow: 0 0 20px #fff; } 100% { text-shadow: 0 0 10px #ffcc00; } }
-        /* أنيميشن الحلقات اللامعة */
         @keyframes ring-glow { 0% { box-shadow: 0 0 5px #ffcc00; } 50% { box-shadow: 0 0 25px #ffcc00, 0 0 35px #fff; } 100% { box-shadow: 0 0 5px #ffcc00; } }
-        /* أنيميشن الموتور المتحرك عند اللمس */
-        @keyframes bikeMove { 
-            0% { transform: translateY(0) rotate(0deg); opacity: 0.8; }
-            50% { transform: translateY(-30px) rotate(-5deg); opacity: 1; }
-            100% { transform: translateY(0) rotate(0deg); opacity: 0.8; }
-        }
-
+        @keyframes bikeRide { 0% { transform: translateX(100px) scale(1.5); opacity: 0; } 50% { transform: translateX(-20px) scale(2); opacity: 1; } 100% { transform: translateX(-200px) scale(1.5); opacity: 0; } }
+        
         body { font-family: 'Segoe UI', sans-serif; margin: 0; background-color: #1a1a1a; color: white; text-align: center; overflow-x: hidden; }
-        
-        /* الهيدر الأخضر */
-        .header { background-color: #25D366; padding: 25px; border-bottom: 5px solid #ffcc00; position: relative; z-index: 10; }
+        .header { background-color: #25D366; padding: 25px; border-bottom: 5px solid #ffcc00; position: relative; }
         .brand-name { font-size: 26px; font-weight: 900; animation: glow 2s infinite; color: #1a1a1a; }
-        
-        /* الحاوية الرئيسية */
-        .container { padding: 15px; max-width: 500px; margin: auto; position: relative; z-index: 5; }
-        
-        /* الكروت الرمادية مع الخط الذهبي */
+        .container { padding: 15px; max-width: 500px; margin: auto; }
         .card { background: #2d2d2d; margin: 15px 0; padding: 20px; border-radius: 20px; border: 1px solid #444; border-right: 6px solid #ffcc00; box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
         
-        /* لوحة الإدارة */
-        #adminPanel { display: none; background: #333; border: 2px dashed #ffcc00; padding: 15px; border-radius: 15px; margin-bottom: 20px; text-align: right; }
-        .status-card { display: none; margin-bottom: 15px; padding: 15px; border-radius: 15px; border: 2px solid white; z-index: 11; position: relative; }
+        /* مناطق الخدمة اللامعة */
+        .service-areas { font-size: 20px; font-weight: 900; color: #ffcc00; animation: glow 1.5s infinite; display: block; margin: 10px 0; }
 
-        /* حقول الإدخال */
         input { width: 100%; padding: 12px; margin: 8px 0; border-radius: 10px; border: 2px solid #ffcc00; text-align: center; font-size: 18px; font-weight: bold; box-sizing: border-box; background: white; color: black; }
         .hint-text { color: #ffcc00; font-size: 15px; font-weight: bold; display: block; margin-top: 5px; }
         .then-text { color: #fff; font-size: 20px; font-weight: 900; margin: 10px 0; display: block; text-decoration: underline #ffcc00; }
 
-        /* دوائر الهيبة اللامعة */
         .circle-group { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin: 20px 0; }
-        .circle-wrapper { display: flex; flex-direction: column; align-items: center; }
-        .press-here { font-size: 11px; color: #ffcc00; margin-bottom: 5px; font-weight: bold; }
-        .circle { width: 60px; height: 60px; border-radius: 50%; border: 4px solid #ffcc00; line-height: 52px; cursor: pointer; font-weight: 900; font-size: 26px; color: #ffcc00; transition: 0.3s; background: transparent; }
+        .circle { width: 60px; height: 60px; border-radius: 50%; border: 4px solid #ffcc00; line-height: 52px; cursor: pointer; font-weight: 900; font-size: 26px; color: #ffcc00; transition: 0.3s; }
         .circle.active { background: #ffcc00; color: #000; transform: scale(1.2); animation: ring-glow 1s infinite; border-color: #fff; }
 
-        /* الأزرار */
         .btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 18px; border-radius: 15px; text-decoration: none; font-weight: bold; font-size: 18px; margin: 10px 0; border: none; cursor: pointer; }
-        .btn-location { background: linear-gradient(45deg, #ffcc00, #ff9900); color: #000; border-bottom: 5px solid #b89600; font-size: 16px; font-weight: 900; }
-        .btn-whatsapp { background: #25D366; color: white; border-bottom: 4px solid #128C7E; }
-        .btn-send-sub { background: white; color: black; border: 3px solid #ffcc00; font-size: 16px; font-weight: 900; }
+        .btn-location { background: linear-gradient(45deg, #ffcc00, #ff9900); color: #000; font-weight: 900; }
+        .btn-whatsapp { background: #25D366; color: white; }
+        .btn-sms { background: #ff5722; color: white; }
         
-        .result-box { font-size: 30px; color: #ffcc00; font-weight: bold; padding: 15px; border: 2px dashed #ffcc00; border-radius: 15px; margin-top: 10px; background: rgba(255,204,0,0.1); }
+        /* الموتور الكبير المتحرك */
+        #bigBike { position: fixed; bottom: 20%; right: -100px; font-size: 80px; z-index: 1000; pointer-events: none; opacity: 0; }
+        #bigBike.run { animation: bikeRide 1.5s linear; }
 
-        /* تذيل الصفحة */
-        .footer { padding: 20px; background-color: #1a1a1a; border-top: 2px solid #444; margin-top: 20px; }
-
-        /* --- الموتور المتحرك عند اللمس --- */
-        #touchBike {
-            position: fixed;
-            bottom: -50px; /* مخفي جزئياً في البداية */
-            right: 20px;
-            font-size: 50px; /* حجم الموتور */
-            z-index: 100; /* فوق كل شيء */
-            opacity: 0;
-            transition: opacity 0.3s ease, bottom 0.3s ease;
-            pointer-events: none; /* لا يمنع اللمس تحت */
-        }
-        /* الكلاس الذي سيتم إضافته بالـ JavaScript عند اللمس */
-        #touchBike.animate {
-            animation: bikeMove 1s ease-out;
-            opacity: 1;
-            bottom: 20px; /* يظهر بالكامل */
-        }
+        .footer-note { color: #ffcc00; font-size: 18px; font-weight: bold; margin-top: 20px; }
+        .rights { font-size: 12px; color: #777; margin-bottom: 20px; }
     </style>
 </head>
-<body oninput="startBikeAnimation()" onmousemove="startBikeAnimation()" ontouchstart="startBikeAnimation()">
+<body onclick="moveBike()" ontouchstart="moveBike()">
 
-    <div id="touchBike">🏍️</div>
+    <div id="bigBike">🏍️</div>
 
     <div class="header">
-        <div class="brand-name">🏍️ أَلُو مٌوتُور أَبُو يَزَن 🏍️<br>ALO MOTOR EBU YEZEN</div>
-        <button onclick="checkPass()" style="position: absolute; bottom: 5px; left: 5px; background: none; border: none; color: #1a1a1a; font-size: 12px; cursor: pointer; font-weight: bold;">⚙️ إدارة النظام</button>
+        <div class="brand-name">🏍️ أَلُو مٌوتُور أَبُو يَزَن 🏍️</div>
     </div>
 
     <div class="container">
-        <div id="statusCard" class="status-card">
-            <p id="statusMsg" class="status-text"></p>
-        </div>
-
-        <div id="adminPanel">
-            <h4 style="color: #ffcc00; text-align:center;">⚙️ إعدادات الإدارة</h4>
-            <label>📝 سبب العطلة:</label>
-            <input type="text" id="statusInput" placeholder="اكتب السبب هنا">
-            <button onclick="setStatus('available')" style="width:100%; padding:12px; background:#25D366; font-weight:bold; margin-bottom:10px; border-radius:10px;">✅ متاح للعمل</button>
-            <button onclick="setStatus('holiday')" style="width:100%; padding:12px; background:#931a1a; color:white; font-weight:bold; margin-bottom:10px; border-radius:10px;">🚫 تفعيل العطلة</button>
-            <button onclick="localStorage.removeItem('work_status'); location.reload();" style="width:100%; padding:10px; background:#555; color:white; border-radius:10px;">إخفاء الحالة</button>
-            <hr style="border:0.5px solid #444;">
-            <label>🔑 تغيير الشفرة:</label>
-            <input type="password" id="newPass" placeholder="الشفرة الجديدة">
-            <button onclick="localStorage.setItem('admin_pass', document.getElementById('newPass').value); alert('تم الحفظ');" style="width:100%; padding:10px; background:#ffcc00; border-radius:10px;">حفظ الشفرة</button>
-        </div>
-
         <div class="card">
             <h3 style="color: #ffcc00;">📍 طلب سريع ودقيق</h3>
             <button onclick="sendLocation()" class="btn btn-location">اضغط هنا لإرسال موقعك إلى أبو يزن</button>
@@ -111,14 +58,12 @@
             <input type="text" placeholder="📍 من: (موقعك الحالي)">
             <input type="text" placeholder="🏁 إلى: (الجهة)">
             <input type="number" id="kmIn" placeholder="📏 أدخل المسافة (كم)" oninput="document.getElementById('res').innerText = 'السعر: ' + (this.value * 15) + ' ل.ت'">
-            <div id="res" class="result-box">السعر: 0 ل.ت</div>
-            <p style="font-size: 12px; color:#aaa;">(15 ليرة لكل 1 كم)</p>
+            <div id="res" style="font-size:30px; color:#ffcc00; font-weight:bold; margin-top:10px;">السعر: 0 ل.ت</div>
         </div>
 
         <div class="card">
-            <button onclick="document.getElementById('heiba').style.display='block'" class="heiba-btn" style="background: linear-gradient(45deg, #ffcc00, #b89600); color: #000; padding: 15px; border-radius: 10px; cursor: pointer; font-weight: 900; width: 100%; border: none; font-size: 18px;">🎁 عرض الهيبة.. اضغط هنا</button>
+            <button onclick="document.getElementById('heiba').style.display='block'" class="btn" style="background:#ffcc00; color:#000;">🎁 عرض الهيبة.. اضغط هنا</button>
             <div id="heiba" style="display:none; padding-top:20px;">
-                <h3 style="color: #ffcc00;">كل 6 توصيلات والسابعة مجاناً</h3>
                 <span class="hint-text">( ادخل اسمك هنا )</span>
                 <input type="text" id="cName" placeholder="الاسم المسجل">
                 <span class="then-text">( ثم )</span>
@@ -128,92 +73,61 @@
                 <div class="circle-group">
                     <script>
                         for(let i=1; i<=6; i++){
-                            document.write(`<div class="circle-wrapper"><span class="press-here">اضغط هنا</span><div class="circle" onclick="mark(${i})">${i}</div></div>`);
+                            document.write(`<div style="display:flex; flex-direction:column; align-items:center;"><span style="font-size:10px; color:#ffcc00; font-weight:bold;">اضغط هنا</span><div class="circle" onclick="mark(${i})">${i}</div></div>`);
                         }
                     </script>
                 </div>
-                <div id="congrats" style="color: #25D366; font-weight: bold; margin: 10px 0;"></div>
-                <button onclick="sendHeiba()" class="btn btn-send-sub">اضغط هنا لكي ترسل الاشتراك إلى ألو موتور أبو يزن</button>
+                <button onclick="sendHeiba()" class="btn" style="background:white; color:black; border:3px solid #ffcc00;">إرسال اشتراك الهيبة</button>
             </div>
         </div>
 
         <div class="card">
             <a href="https://wa.me/963957352181" class="btn btn-whatsapp">🏍️ واتساب ألو موتور</a>
+            <a href="sms:+963957352181" class="btn btn-sms">✉️ إرسال رسالة SMS</a>
             <a href="tel:+963957352181" class="btn" style="background:#007bff; color:white;">📞 اتصال مباشر</a>
+            
             <hr style="border:0.5px solid #444;">
             <h3 style="color: #ffcc00;">📍 مناطق الخدمة</h3>
-            <p>إدلب . حلب . سرمدا . الدانا</p>
-            <p>🕒 الدوام: من 5 مساءً وحتى 2 صباحاً</p>
-            <h2 style="animation: glow 2s infinite; color: #ffcc00;">انتظرو عرض الهيبة</h2>
+            <span class="service-areas">إدلب . حلب . سرمدا . الدانا وماحولها</span>
+            <p>🕒 من 5 مساءً وحتى 2 صباحاً</p>
         </div>
-    </div>
 
-    <div class="footer">
-        <p>جميع الحقوق محفوظة لألو موتور - أبو يزن © 2024</p>
+        <p class="footer-note">نتمنى لكم الصحة والعافية ❤️</p>
+        <p class="rights">جميع الحقوق محفوظة لألو موتور - أبو يزن © 2026</p>
     </div>
 
     <script>
         let selectedMark = 0;
-        function getPass() { return localStorage.getItem("admin_pass") || "1234"; }
-        function checkPass() { if(prompt("أدخل شفرة الإدارة:") === getPass()) document.getElementById('adminPanel').style.display='block'; else alert("غلط!"); }
-        
         function mark(n) {
             selectedMark = n;
             document.querySelectorAll('.circle').forEach((c, i) => i < n ? c.classList.add('active') : c.classList.remove('active'));
-            document.getElementById('congrats').innerText = n >= 6 ? "توصيلتك الجاية مجانية مبروك! 🎉" : "";
         }
 
-        function setStatus(t) {
-            let reason = document.getElementById('statusInput').value;
-            let s = { 
-                display: 'block', 
-                text: t === 'available' ? '✅ ألو موتور متاح حالياً' : '🚫 اليوم عطلة' + (reason ? ' بسبب: ' + reason : ''), 
-                bg: t === 'available' ? '#1b5e20' : '#931a1a' 
-            };
-            localStorage.setItem("work_status", JSON.stringify(s));
-            location.reload();
-        }
-
-        window.onload = function() {
-            let s = JSON.parse(localStorage.getItem("work_status"));
-            if(s) { 
-                Object.assign(document.getElementById('statusCard').style, {display: s.display, backgroundColor: s.bg, borderColor: 'white'}); 
-                document.getElementById('statusMsg').innerText = s.text; 
-            }
-        }
-
+        // الموقع المصلح 100%
         function sendLocation() {
             if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(p => {
-                    window.open(`https://wa.me/963957352181?text=موقعي الحالي للطلب: http://googleusercontent.com/maps.google.com/7{p.coords.latitude},${p.coords.longitude}`);
-                }, () => alert("فعل الـ GPS أولاً"));
+                navigator.geolocation.getCurrentPosition(function(pos) {
+                    let lat = pos.coords.latitude;
+                    let lon = pos.coords.longitude;
+                    let mapUrl = `https://www.google.com/maps?q=${lat},${lon}`;
+                    window.open(`https://wa.me/963957352181?text=` + encodeURIComponent("يا أبو يزن هذا موقعي للطلب: " + mapUrl), '_blank');
+                }, function() { alert("فعل الـ GPS في جوالك"); });
             }
         }
 
         function sendHeiba() {
             let n = document.getElementById('cName').value, p = document.getElementById('cPhone').value;
-            if(!n || !p || !selectedMark) return alert("عبي البيانات كاملة");
-
+            if(!n || !p || !selectedMark) return alert("كمل البيانات");
             const emojiNumbers = ["", "1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣"];
-            const heibaEmoji = emojiNumbers[selectedMark];
-            const formattedMessage = `📦 اشتراك هيبة جديد:\n\n👤 الاسم: ${n}\n📱 الرقم: ${p}\n🔢 التوصيلة: ${heibaEmoji}`;
-            
-            window.open(`https://wa.me/963957352181?text=${encodeURIComponent(formattedMessage)}`, '_blank');
+            let msg = `📦 اشتراك هيبة جديد:\n\n👤 الاسم: ${n}\n📱 الرقم: ${p}\n🔢 التوصيلة: ${emojiNumbers[selectedMark]}`;
+            window.open(`https://wa.me/963957352181?text=` + encodeURIComponent(msg), '_blank');
         }
 
-        // --- دالة تحريك الموتور عند اللمس ---
-        let bikeTimeout;
-        function startBikeAnimation() {
-            const bike = document.getElementById('touchBike');
-            
-            // إضافة الكلاس الذي يفعّل الأنيميشن ويظهره
-            bike.classList.add('animate');
-            
-            // إزالة الكلاس بعد ثانية واحدة (مدة الأنيميشن) ليعود لوضعه الطبيعي ويختفي
-            clearTimeout(bikeTimeout);
-            bikeTimeout = setTimeout(() => {
-                bike.classList.remove('animate');
-            }, 1000); // 1000 ميلي ثانية = 1 ثانية
+        // تحريك الموتور الكبير
+        function moveBike() {
+            let b = document.getElementById('bigBike');
+            b.classList.add('run');
+            setTimeout(() => b.classList.remove('run'), 1500);
         }
     </script>
 </body>
