@@ -5,89 +5,205 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ألو موتور - أبو يزن</title>
     <style>
-        @keyframes glow { 0% { text-shadow: 0 0 10px #ffcc00; } 50% { text-shadow: 0 0 20px #fff; } 100% { text-shadow: 0 0 10px #ffcc00; } }
-        body { font-family: 'Segoe UI', sans-serif; margin: 0; background-color: #1a1a1a; color: white; text-align: center; }
-        .header { background-color: #25D366; padding: 25px; border-bottom: 5px solid #ffcc00; }
-        
-        /* العنوان المزخرف والعريض */
-        .brand-name { font-size: 28px; font-weight: 900; animation: glow 2s infinite; color: #1a1a1a; line-height: 1.5; font-family: 'Arial Black', sans-serif; }
-        
+        @keyframes glow { 
+            0% { text-shadow: 0 0 5px #ffcc00, 0 0 10px #ffcc00; } 
+            50% { text-shadow: 0 0 20px #fff, 0 0 30px #ffcc00; } 
+            100% { text-shadow: 0 0 5px #ffcc00, 0 0 10px #ffcc00; } 
+        }
+        body { font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; background-color: #1a1a1a; color: white; text-align: center; }
+        .overlay { background-color: rgba(0, 0, 0, 0.9); min-height: 100vh; padding-bottom: 40px; }
+        .header { background-color: #25D366; padding: 25px; border-bottom: 5px solid #ffcc00; position: relative; }
+        .brand-name { font-size: 26px; font-weight: 900; animation: glow 2s infinite; color: #1a1a1a; line-height: 1.6; }
         .container { padding: 15px; max-width: 500px; margin: auto; }
-        .card { background: #2d2d2d; margin: 15px 0; padding: 20px; border-radius: 15px; border-right: 6px solid #ffcc00; box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
+        .card { background-color: #2d2d2d; margin: 20px 0; padding: 20px; border-radius: 20px; border: 1px solid #444; }
         
-        /* زر مشاركة الموقع الذهبي */
-        .location-btn { background: linear-gradient(45deg, #ffcc00, #ff9900); color: #000; padding: 15px; border-radius: 12px; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 10px; font-weight: 900; font-size: 18px; border: 2px solid #fff; }
+        /* كرت الحالة (عطلة أو متاح) */
+        .status-card { display: none; margin-bottom: 15px; padding: 15px; border-radius: 15px; border: 2px solid white; } 
+        .status-text { font-size: 18px; font-weight: bold; color: white; margin: 0; }
+
+        /* لوحة التحكم السرية */
+        #adminPanel { display: none; background: #333; border: 2px dashed #ffcc00; padding: 15px; border-radius: 15px; margin-bottom: 20px; text-align: right; }
         
-        /* الحاسبة */
-        input { width: 100%; padding: 12px; margin: 8px 0; border-radius: 8px; border: 2px solid #ffcc00; text-align: center; box-sizing: border-box; font-weight: bold; }
-        .result-box { font-size: 28px; color: #ffcc00; font-weight: bold; padding: 15px; border: 2px dashed #ffcc00; border-radius: 10px; margin-top: 10px; }
-
-        /* عداد الهيبة */
-        .circle-group { display: flex; justify-content: center; gap: 8px; margin: 15px 0; }
-        .circle { width: 35px; height: 35px; border-radius: 50%; border: 2px solid #ffcc00; line-height: 35px; cursor: pointer; font-weight: bold; }
-        .circle.active { background: #ffcc00; color: #000; box-shadow: 0 0 10px #ffcc00; }
-
-        /* الأزرار */
-        .btn { display: flex; align-items: center; justify-content: center; gap: 10px; padding: 15px; margin: 10px 0; border-radius: 12px; color: white; text-decoration: none; font-weight: bold; font-size: 18px; }
-        .btn-wa { background: #25D366; }
-        .btn-call { background: #007bff; }
-        .btn-sms { background: #f39c12; }
+        label { color: #ffcc00; font-weight: bold; display: block; margin-bottom: 5px; }
+        input { width: 100%; padding: 12px; border-radius: 10px; border: 2px solid #ffcc00; text-align: center; font-size: 18px; font-weight: bold; box-sizing: border-box; background: white; color: black; margin-bottom: 10px; }
+        .result-box { font-size: 30px; color: #ffcc00; font-weight: bold; margin-top: 15px; padding: 15px; border: 2px dashed #ffcc00; border-radius: 15px; background: rgba(255,204,0,0.1); }
+        .heiba-btn { background: linear-gradient(45deg, #ffcc00, #b89600); color: #000; padding: 15px; border-radius: 10px; cursor: pointer; font-weight: 900; width: 100%; border: none; font-size: 18px; }
+        .hidden-content { display: none; padding: 20px 0; }
+        .circle-group { display: flex; justify-content: center; gap: 8px; margin: 20px 0; }
+        .circle { width: 35px; height: 35px; border-radius: 50%; border: 2px solid #ffcc00; line-height: 35px; cursor: pointer; font-weight: bold; font-size: 18px; color: #ffcc00; }
+        .circle.active { background: #ffcc00; color: #000; box-shadow: 0 0 15px #ffcc00; }
+        
+        .btn { display: flex; align-items: center; justify-content: center; gap: 12px; width: 100%; margin: 15px auto; padding: 18px; border-radius: 15px; text-decoration: none; font-weight: bold; color: white; font-size: 20px; box-sizing: border-box; }
+        .btn-location { background: linear-gradient(45deg, #ffcc00, #ff9900); color: #000; border-bottom: 4px solid #b89600; }
+        .btn-whatsapp { background-color: #25D366; border-bottom: 4px solid #128C7E; }
+        .btn-call { background-color: #007bff; border-bottom: 4px solid #0056b3; }
+        .btn-sms { background-color: #f39c12; border-bottom: 4px solid #d35400; }
+        .footer-msg { font-size: 22px; font-weight: bold; color: #ffcc00; margin-top: 20px; }
     </style>
 </head>
 <body>
 
+<div class="overlay">
     <div class="header">
         <div class="brand-name">🏍️ أَلُو مٌوتُور أَبُو يَزَن 🏍️<br>ALO MOTOR EBU YEZEN</div>
+        <button onclick="checkPass()" style="position: absolute; bottom: 2px; left: 5px; background: none; border: none; color: #1a1a1a; font-size: 11px; cursor: pointer; font-weight: bold;">إدارة النظام</button>
     </div>
 
     <div class="container">
-        
-        <div class="card">
-            <h3 style="color:#ffcc00">📍 طلب سريع</h3>
-            <a href="https://wa.me/963957352181?text=يا%20أبو%20يزن%20هذا%20موقعي%20الحالي" class="location-btn">📍 أرسل موقعي الحالي لأبو يزن</a>
+        <div id="statusCard" class="status-card">
+            <p id="statusMsg" class="status-text"></p>
         </div>
 
-        <div class="card">
-            <h3 style="color:#ffcc00">🎁 عرض الـ 7 مجاناً</h3>
-            <p>كل 6 توصيلات والسابعة مجاناً</p>
-            <div class="circle-group">
-                <div class="circle" onclick="this.classList.toggle('active')">1</div>
-                <div class="circle" onclick="this.classList.toggle('active')">2</div>
-                <div class="circle" onclick="this.classList.toggle('active')">3</div>
-                <div class="circle" onclick="this.classList.toggle('active')">4</div>
-                <div class="circle" onclick="this.classList.toggle('active')">5</div>
-                <div class="circle" onclick="this.classList.toggle('active')">6</div>
+        <div id="adminPanel">
+            <h4 style="color: #ffcc00; text-align:center; margin-top:0;">⚙️ إعدادات الإدارة</h4>
+            
+            <label>📝 تحديث الحالة للزبائن:</label>
+            <input type="text" id="statusInput" placeholder="اكتب ملاحظة (مثلاً: سبب العطلة)">
+            <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px;">
+                <button onclick="setWorkStatus('available')" style="padding: 12px; background: #25D366; border: none; font-weight: bold; border-radius: 8px; cursor: pointer;">✅ أنا في العمل (متاح)</button>
+                <button onclick="setWorkStatus('holiday')" style="padding: 12px; background: #931a1a; color: white; border: none; font-weight: bold; border-radius: 8px; cursor: pointer;">🚫 تفعيل العطلة</button>
+                <button onclick="clearStatus()" style="padding: 10px; background: #555; color: white; border: none; border-radius: 8px; cursor: pointer;">إخفاء الحالة تماماً</button>
             </div>
-            <input type="text" placeholder="اسمك ورقمك المسجل">
+
+            <hr style="border: 0.5px solid #444;">
+            <label>🔑 شفرة الدخول:</label>
+            <input type="password" id="newPassInput" placeholder="الشفرة الجديدة">
+            <button onclick="changePassword()" style="width: 100%; padding: 10px; background: #ffcc00; color: black; border: none; font-weight: bold; border-radius: 8px; cursor: pointer;">حفظ الشفرة</button>
         </div>
 
         <div class="card">
-            <h3 style="color:#ffcc00">💰 حاسبة السعر</h3>
-            <input type="text" placeholder="من موقعك الحالي">
-            <input type="text" placeholder="الذهاب إلى">
-            <input type="number" id="km" placeholder="المسافة (كم)" oninput="document.getElementById('res').innerText = 'السعر: ' + (this.value * 15) + ' ل.ت'">
-            <div id="res" class="result-box">السعر: 0 ل.ت</div>
-            <p style="font-size: 12px; color:#aaa;">(15 ليرة تركية لكل 1 كم)</p>
+            <h3 style="color: #ffcc00;">📍 طلب سريع ودقيق</h3>
+            <p style="font-size: 14px; margin-bottom: 10px;">أرسل موقعك الآن ليصلك الموتور بأسرع وقت</p>
+            <a href="https://wa.me/963957352181?text=يا%20أبو%20يزن%20هذا%20موقعي%20الحالي" class="btn btn-location">📍 تحديد موقعي للطلب السريع</a>
         </div>
 
         <div class="card">
-            <a href="https://wa.me/963957352181" class="btn btn-wa">
-                <img src="https://img.icons8.com/color/30/000000/motorcycle.png"/> اتصل واتساب في ألو موتور
-            </a>
+            <h3 style="color: #ffcc00;">💰 حاسبة سعر التوصيل</h3>
+            <div class="input-group"><label>📏 المسافة (كم):</label><input type="number" id="kmInput" placeholder="أدخل الكيلومترات" oninput="calculate()"></div>
+            <div id="priceResult" class="result-box">السعر: 0 ل.ت</div>
+            <p style="font-size: 12px; color: #ccc; margin-top: 5px;">(السعر: 15 ليرة لكل 1 كم)</p>
+        </div>
+
+        <div class="card">
+            <button class="heiba-btn" onclick="toggleHeiba()">🎁 عرض الهيبة.. اضغط هنا</button>
+            <div id="heibaContent" class="hidden-content">
+                <h3 style="color: #ffcc00;">كل 6 توصيلات والسابعة مجاناً</h3>
+                <input type="text" id="custName" placeholder="اسمك المسجل">
+                <input type="text" id="custPhone" placeholder="رقم هاتفك">
+                <div class="circle-group">
+                    <div class="circle" onclick="mark(1)">1</div>
+                    <div class="circle" onclick="mark(2)">2</div>
+                    <div class="circle" onclick="mark(3)">3</div>
+                    <div class="circle" onclick="mark(4)">4</div>
+                    <div class="circle" onclick="mark(5)">5</div>
+                    <div class="circle" onclick="mark(6)">6</div>
+                </div>
+                <div id="congrats" style="color: #25D366; font-weight: bold; margin: 10px 0;"></div>
+                <button onclick="sendOrder()" style="width: 100%; padding: 12px; background: white; color: black; border: none; border-radius: 10px; font-weight: bold; cursor: pointer;">✅ تثبيت وإرسال واتساب</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <a href="https://wa.me/963957352181" class="btn btn-whatsapp">🏍️ واتساب ألو موتور</a>
             <a href="tel:+963957352181" class="btn btn-call">📞 اتصال مباشر</a>
-            <a href="sms:+963957352181" class="btn btn-sms">✉️ رسالة نصية SMS</a>
+            <a href="sms:+963957352181" class="btn btn-sms">✉️ رسالة SMS</a>
         </div>
 
         <div class="card">
-            <h3 style="color:#ffcc00">📍 مناطق الخدمة</h3>
+            <h3 style="color: #ffcc00;">📍 مناطق الخدمة</h3>
             <p>إدلب . حلب . سرمدا . الدانا . وماحولها</p>
-            <p>🕒 الدوام: 5 مساءً - 2 صباحاً</p>
-            <hr style="border:0.5px solid #444;">
-            <h2 style="animation: glow 2s infinite; color: #ffcc00;">انتظرو عرض الهيبة</h2>
+            <p>🕒 من 5 مساءً وحتى 2 صباحاً</p>
+        </div>
+
+        <div class="card">
+            <h2 class="footer-msg" style="animation: glow 2s infinite;">انتظرو عرض الهيبة</h2>
             <p>نتمنى لكم الصحة والعافية ✨</p>
         </div>
-
     </div>
+</div>
 
+<script>
+    let currentMark = 0;
+    function getPass() { return localStorage.getItem("admin_pass") || "1234"; }
+
+    function checkPass() {
+        let p = prompt("أدخل شفرة الإدارة:");
+        if (p === getPass()) {
+            let panel = document.getElementById("adminPanel");
+            panel.style.display = (panel.style.display === "block") ? "none" : "block";
+        } else if (p !== null) { alert("الشفرة غلط!"); }
+    }
+
+    function changePassword() {
+        let newP = document.getElementById("newPassInput").value;
+        if (newP) {
+            localStorage.setItem("admin_pass", newP);
+            alert("تم التغيير بنجاح!");
+            document.getElementById("newPassInput").value = "";
+        }
+    }
+
+    function setWorkStatus(type) {
+        let card = document.getElementById("statusCard");
+        let msg = document.getElementById("statusMsg");
+        let input = document.getElementById("statusInput").value;
+        
+        if(type === 'available') {
+            card.style.display = "block";
+            card.style.backgroundColor = "#1b5e20";
+            card.style.borderColor = "#25D366";
+            msg.innerText = "✅ ألو موتور أبو يزن متاح.. نحن في خدمتكم الآن";
+            localStorage.setItem("work_status", "available");
+        } else {
+            card.style.display = "block";
+            card.style.backgroundColor = "#931a1a";
+            card.style.borderColor = "#ff4444";
+            msg.innerText = "🚫 اليوم عطلة" + (input ? " بسبب: " + input : "");
+            localStorage.setItem("work_status", "holiday|" + input);
+        }
+    }
+
+    function clearStatus() {
+        document.getElementById("statusCard").style.display = "none";
+        localStorage.removeItem("work_status");
+    }
+
+    window.onload = function() {
+        let saved = localStorage.getItem("work_status");
+        if(saved) {
+            if(saved === "available") { setWorkStatus('available'); }
+            else { 
+                let reason = saved.split("|")[1];
+                document.getElementById("statusInput").value = reason || "";
+                setWorkStatus('holiday');
+            }
+        }
+    }
+
+    function calculate() {
+        const km = document.getElementById('kmInput').value;
+        document.getElementById('priceResult').innerText = "السعر: " + (km * 15) + " ل.ت";
+    }
+
+    function toggleHeiba() {
+        var content = document.getElementById("heibaContent");
+        content.style.display = (content.style.display === "block") ? "none" : "block";
+    }
+
+    function mark(num) {
+        currentMark = num;
+        let circles = document.querySelectorAll('.circle');
+        circles.forEach((c, i) => i < num ? c.classList.add('active') : c.classList.remove('active'));
+        document.getElementById('congrats').innerText = num >= 6 ? "مبروك! توصيلتك الجاية مجانية 🎉" : "";
+    }
+
+    function sendOrder() {
+        const name = document.getElementById('custName').value;
+        const phone = document.getElementById('custPhone').value;
+        if(!name || !phone || currentMark === 0) { alert("عبي البيانات يا غالي"); return; }
+        const text = `تثبيت توصيلة هيبة:\n👤 الاسم: ${name}\n📱 الرقم: ${phone}\n🔢 الرقم الحالي: ${currentMark}`;
+        window.open(`https://wa.me/963957352181?text=${encodeURIComponent(text)}`, '_blank');
+    }
+</script>
 </body>
 </html>
