@@ -3,108 +3,117 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ألو موتور أبو يزن - VIP</title>
+    <title>ألو موتور - أبو يزن</title>
     <style>
-        :root { --gold: #ffcc00; --green: #25D366; }
-        body { font-family: 'Segoe UI', sans-serif; background: #1a1a1a; color: white; text-align: center; margin: 0; overflow-x: hidden; }
-        .header { background: var(--green); padding: 25px; border-bottom: 5px solid var(--gold); position: relative; }
-        .container { padding: 15px; max-width: 450px; margin: auto; position: relative; z-index: 2; }
-        .card { background: rgba(45, 45, 45, 0.9); margin: 15px 0; padding: 20px; border-radius: 20px; border-right: 6px solid var(--gold); box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
-        .circle { width: 50px; height: 50px; border-radius: 50%; border: 3px solid var(--gold); display: inline-block; margin: 5px; line-height: 48px; font-weight: 900; cursor: pointer; color: var(--gold); transition: 0.3s; }
-        .circle.active { background: var(--gold); color: #000; transform: scale(1.1); box-shadow: 0 0 15px var(--gold); }
-        .then-text { color: var(--gold); font-weight: 900; display: block; margin: 12px 0; font-size: 18px; text-decoration: underline; }
-        input { width: 100%; padding: 12px; margin: 8px 0; border-radius: 10px; border: 2px solid var(--gold); text-align: center; font-size: 18px; font-weight: bold; }
-        .btn-main { background: linear-gradient(45deg, var(--gold), #ff9900); color: #000; padding: 18px; border-radius: 15px; border: none; width: 100%; font-size: 20px; font-weight: 900; cursor: pointer; margin: 10px 0; }
-        .bg-bike { position: fixed; top: 40%; left: 50%; transform: translate(-50%, -50%); font-size: 200px; opacity: 0.1; color: red; z-index: 1; pointer-events: none; }
-        .status-bar { padding: 12px; background: #333; border: 2px solid var(--gold); margin: 10px; border-radius: 10px; font-weight: bold; color: var(--gold); }
+        @keyframes glow { 0% { text-shadow: 0 0 10px #ffcc00; } 50% { text-shadow: 0 0 20px #fff; } 100% { text-shadow: 0 0 10px #ffcc00; } }
+        @keyframes ring-glow { 0% { box-shadow: 0 0 5px #ff0000; } 50% { box-shadow: 0 0 25px #ff0000, 0 0 35px #fff; } 100% { box-shadow: 0 0 5px #ff0000; } }
+        
+        @keyframes bikeTransparentRun { 
+            0% { right: -300px; opacity: 0; transform: scale(3); } 
+            20% { opacity: 0.3; } 
+            80% { opacity: 0.3; }
+            100% { right: 120%; opacity: 0; transform: scale(3); } 
+        }
+
+        body { font-family: 'Segoe UI', sans-serif; margin: 0; background-color: #1a1a1a; color: white; text-align: center; overflow-x: hidden; }
+        .header { background-color: #25D366; padding: 25px; border-bottom: 5px solid #ffcc00; position: relative; }
+        .brand-name { font-size: 26px; font-weight: 900; animation: glow 2s infinite; color: #1a1a1a; }
+        .container { padding: 15px; max-width: 500px; margin: auto; }
+        .card { background: #2d2d2d; margin: 15px 0; padding: 20px; border-radius: 20px; border: 1px solid #444; border-right: 6px solid #ffcc00; box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
+        
+        #transBike { 
+            position: fixed; top: 40%; right: -300px; font-size: 120px; z-index: 9999; 
+            pointer-events: none; opacity: 0; filter: grayscale(1); 
+        }
+        #transBike.active { animation: bikeTransparentRun 1.5s linear; }
+
+        #adminPanel { display: none; background: #333; border: 2px dashed #ffcc00; padding: 15px; border-radius: 15px; margin-bottom: 20px; text-align: right; }
+        .status-card { display: none; margin-bottom: 15px; padding: 15px; border-radius: 15px; border: 2px solid white; }
+
+        input { width: 100%; padding: 12px; margin: 8px 0; border-radius: 10px; border: 2px solid #ffcc00; text-align: center; font-size: 18px; font-weight: bold; box-sizing: border-box; background: white; color: black; }
+        .hint-text { color: #ffcc00; font-size: 15px; font-weight: bold; display: block; margin-top: 5px; }
+        .then-text { color: #fff; font-size: 20px; font-weight: 900; margin: 10px 0; display: block; text-decoration: underline #ffcc00; }
+
+        .circle-group { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; margin: 20px 0; }
+        .circle-wrapper { display: flex; flex-direction: column; align-items: center; }
+        .press-here { font-size: 11px; color: #ffcc00; margin-bottom: 5px; font-weight: bold; }
+        
+        /* تعديل اللون الأحمر هنا */
+        .circle { width: 60px; height: 60px; border-radius: 50%; border: 4px solid #ffcc00; line-height: 52px; cursor: pointer; font-weight: 900; font-size: 26px; color: #ffcc00; transition: 0.3s; background: transparent; }
+        .circle.active { background: #ff0000; color: #fff; transform: scale(1.2); animation: ring-glow 1s infinite; border-color: #fff; }
+
+        .btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 18px; border-radius: 15px; text-decoration: none; font-weight: bold; font-size: 18px; margin: 10px 0; border: none; cursor: pointer; }
+        .btn-location { background: linear-gradient(45deg, #ffcc00, #ff9900); color: #000; border-bottom: 5px solid #b89600; font-size: 16px; font-weight: 900; }
+        .btn-whatsapp { background: #25D366; color: white; border-bottom: 4px solid #128C7E; }
+        .btn-send-sub { background: white; color: black; border: 3px solid #ffcc00; font-size: 16px; font-weight: 900; }
+        
+        .result-box { font-size: 30px; color: #ffcc00; font-weight: bold; padding: 15px; border: 2px dashed #ffcc00; border-radius: 15px; margin-top: 10px; background: rgba(255,204,0,0.1); }
     </style>
 </head>
-<body onload="checkStorage()">
+<body onclick="runTransBike()" ontouchstart="runTransBike()" onload="initPage()">
 
-    <div class="bg-bike">🏍️</div>
+    <div id="transBike">🏍️</div>
 
     <div class="header">
-        <h2 style="margin:0; color:#1a1a1a;">🏍️ أَلُو مٌوتُور أَبُو يَزَن</h2>
-        <button onclick="showAdmin()" style="position:absolute; bottom:5px; left:5px; background:none; border:none; color:#1a1a1a; font-size:12px; font-weight:bold;">⚙️ الإدارة</button>
+        <div class="brand-name">🏍️ أَلُو مٌوتُور أَبُو يَزَن 🏍️<br>ALO MOTOR EBU YEZEN</div>
+        <button onclick="checkPass()" style="position: absolute; bottom: 5px; left: 5px; background: none; border: none; color: #1a1a1a; font-size: 12px; cursor: pointer; font-weight: bold;">⚙️ إدارة النظام</button>
     </div>
 
     <div class="container">
-        <div id="uStatus" class="status-bar">الحالة: متاح للعمل الآن ✅</div>
+        <div id="statusCard" class="status-card">
+            <p id="statusMsg" class="status-text"></p>
+        </div>
 
-        <div id="adminP" style="display:none; background:#222; padding:15px; border-radius:15px; border:2px dashed var(--gold); margin-bottom:15px;">
-            <input type="text" id="statIn" placeholder="اكتب حالتك هنا">
-            <button onclick="updateStat()" style="width:100%; background:var(--green); padding:10px; border-radius:10px; font-weight:bold; margin-bottom:5px;">تحديث</button>
-            <button onclick="setStat('في عطلة 🏖️')" style="width:48%; background:red; color:white; padding:10px; border-radius:10px; font-weight:bold;">عطلة</button>
-            <button onclick="setStat('متاح للعمل ✅')" style="width:48%; background:green; color:white; padding:10px; border-radius:10px; font-weight:bold;">متاح</button>
+        <div id="adminPanel">
+            <h4 style="color: #ffcc00; text-align:center;">⚙️ إعدادات الإدارة</h4>
+            <label>📝 سبب العطلة (اختياري):</label>
+            <input type="text" id="statusInput" placeholder="اكتب السبب هنا">
+            <button onclick="setStatus('available')" style="width:100%; padding:12px; background:#25D366; font-weight:bold; margin-bottom:10px; border-radius:10px;">✅ أنا في العمل (متاح)</button>
+            <button onclick="setStatus('holiday')" style="width:100%; padding:12px; background:#931a1a; color:white; font-weight:bold; margin-bottom:10px; border-radius:10px;">🚫 تفعيل العطلة</button>
+            <button onclick="localStorage.removeItem('work_status'); location.reload();" style="width:100%; padding:10px; background:#555; color:white; border-radius:10px;">إخفاء الحالة للزبائن</button>
+            <hr style="border:0.5px solid #444;">
+            <label>🔑 تغيير شفرة الدخول:</label>
+            <input type="password" id="newPass" placeholder="الشفرة الجديدة">
+            <button onclick="localStorage.setItem('admin_pass', document.getElementById('newPass').value); alert('تم تغيير الشفرة بنجاح');" style="width:100%; padding:10px; background:#ffcc00; border-radius:10px;">حفظ الشفرة الجديدة</button>
         </div>
 
         <div class="card">
-            <h3 style="color:var(--gold); margin-top:0;">📍 اطلب موتور الآن</h3>
-            <button onclick="sendLoc()" class="btn-main">إرسال موقعي (واتساب)</button>
+            <h3 style="color: #ffcc00;">📍 طلب سريع ودقيق</h3>
+            <button onclick="sendLocation()" class="btn btn-location">اضغط هنا لإرسال موقعك إلى أبو يزن</button>
         </div>
 
         <div class="card">
-            <h3 style="color:var(--gold); margin-top:0;">🎁 عرض الهيبة (توصيلاتك محفوظة)</h3>
-            <span class="then-text">ثم سجل اسمك</span>
-            <input type="text" id="userName" placeholder="الاسم المسجل" oninput="saveData()">
-            <span class="then-text">ثم سجل رقمك</span>
-            <input type="text" id="userPhone" placeholder="رقم الهاتف" oninput="saveData()">
-            
-            <span class="then-text">ثم اختر رقم التوصيلة</span>
-            <div id="circles">
-                <script>for(let i=1; i<=6; i++) document.write(`<div class="circle" id="c${i}" onclick="mark(${i})">${i}</div>`);</script>
-            </div>
-            <span class="then-text">ثم اضغط للإرسال</span>
-            <button onclick="sendH()" class="btn-main" style="background:#fff; border:2px solid var(--gold);">إرسال الاشتراك 🚀</button>
+            <h3 style="color: #ffcc00;">💰 حاسبة سعر التوصيل</h3>
+            <input type="text" placeholder="📍 من: (موقعك الحالي)">
+            <input type="text" placeholder="🏁 إلى: (الجهة)">
+            <input type="number" id="kmIn" placeholder="📏 أدخل المسافة (كم)" oninput="document.getElementById('res').innerText = 'السعر: ' + (this.value * 15) + ' ل.ت'">
+            <div id="res" class="result-box">السعر: 0 ل.ت</div>
+            <p style="font-size: 12px; color:#aaa;">(السعر المعتمد: 15 ليرة تركية لكل 1 كم)</p>
         </div>
-    </div>
 
-    <script>
-        let myNum = "963957352181";
-        let currentMark = 0;
-
-        // الشغل الجديد: فحص الذاكرة أول ما يفتح الموقع
-        function checkStorage() {
-            let m = localStorage.getItem('abu_yazan_mark');
-            let n = localStorage.getItem('abu_yazan_name');
-            let p = localStorage.getItem('abu_yazan_phone');
-            if(m) mark(parseInt(m), false);
-            if(n) document.getElementById('userName').value = n;
-            if(p) document.getElementById('userPhone').value = p;
-        }
-
-        // حفظ الاسم والرقم تلقائياً
-        function saveData() {
-            localStorage.setItem('abu_yazan_name', document.getElementById('userName').value);
-            localStorage.setItem('abu_yazan_phone', document.getElementById('userPhone').value);
-        }
-
-        function mark(n, alertMe = true) {
-            currentMark = n;
-            localStorage.setItem('abu_yazan_mark', n); // حفظ رقم التوصيلة بذاكرة الجوال
-            document.querySelectorAll('.circle').forEach((c, i) => {
-                if(i < n) c.classList.add('active'); else c.classList.remove('active');
-            });
-            if(n === 6 && alertMe) alert("🎉 مبروك! حصلت على توصيلة مجانية!");
-        }
-
-        function showAdmin() { if(prompt("شفرة الإدارة:") === "123") document.getElementById('adminP').style.display='block'; }
-        function setStat(s) { document.getElementById('uStatus').innerText = "الحالة: " + s; }
-        function updateStat() { let v = document.getElementById('statIn').value; if(v) setStat(v); }
-
-        function sendLoc() {
-            navigator.geolocation.getCurrentPosition(p => {
-                let url = `https://maps.google.com/?q=$${p.coords.latitude},${p.coords.longitude}`;
-                window.open(`https://wa.me/${myNum}?text=أبو يزن، هذا موقعي للطلب:%0A${url}`);
-            }, () => alert("فعل الموقع GPS"));
-        }
-
-        function sendH() {
-            let n = document.getElementById('userName').value, p = document.getElementById('userPhone').value;
-            if(!n || !p || currentMark === 0) return alert("عبي البيانات يا غالي!");
-            let msg = `اشتراك هيبة:%0A👤 الاسم: ${n}%0A📱 الرقم: ${p}%0A🔢 التوصيلة: ${currentMark}`;
-            window.open(`https://wa.me/${myNum}?text=${msg}`);
-        }
-    </script>
-</body>
-</html>
+        <div class="card">
+            <button onclick="document.getElementById('heiba').style.display='block'" class="heiba-btn" style="background: linear-gradient(45deg, #ffcc00, #b89600); color: #000; padding: 15px; border-radius: 10px; cursor: pointer; font-weight: 900; width: 100%; border: none; font-size: 18px;">🎁 عرض الهيبة.. اضغط هنا</button>
+            <div id="heiba" style="display:none; padding-top:20px;">
+                <h3 style="color: #ffcc00;">كل 6 توصيلات والسابعة مجاناً</h3>
+                
+                <span class="hint-text">( ادخل اسمك هنا )</span>
+                <input type="text" id="cName" placeholder="الاسم المسجل عندنا">
+                <span class="then-text">( ثم )</span>
+                
+                <span class="hint-text">( ادخل رقم الهاتف هنا )</span>
+                <input type="text" id="cPhone" placeholder="رقم هاتفك">
+                <span class="then-text">( ثم )</span>
+                
+                <div class="circle-group">
+                    <script>
+                        for(let i=1; i<=6; i++){
+                            document.write(`
+                                <div class="circle-wrapper">
+                                    <span class="press-here">اضغط هنا</span>
+                                    <div class="circle" id="circle-${i}" onclick="mark(${i})">${i}</div>
+                                </div>
+                            `);
+                        }
+                    </script>
+                </div>
+                <div id="congrats
